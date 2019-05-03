@@ -1,0 +1,99 @@
+
+
+#fiveRows {
+    display: grid;
+    grid-template-rows: 130px 50px 50px 20px 50px;
+    text-align: center;
+    /* border:2px solid red; */
+}
+
+#row1_dices {
+    /* background-color: blue; */
+     background-color: white;
+    }
+    
+    #allDicesRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        position: fixed;
+        /* border: 1px solid orange; */
+        /* background-color: rgb(228, 203, 140); */
+    }
+
+#row2_rollAll {
+    font-size: 30px;
+    background-color: rgb(85, 212, 85);
+    z-index: 1;
+    cursor: pointer;
+}
+
+
+#row3_rollSomeDices {
+    font-size: 30px;
+    background-color: rgb(100, 190, 100);
+    
+}
+
+#row3_clickable_RollSomeDices {
+    font-size: 30px;
+    background-color: rgb(100, 190, 100);
+    cursor: pointer;
+    display: none;
+}
+
+#row4 {
+    font-size: 20px;
+    background-color: rgb(165, 228, 165);
+}
+
+#row5_choseACategory {
+    font-size: 30px;
+    background-color: green;
+}
+
+
+
+/* *********** each dice ********** */
+#dice1 {
+    font-size: 180px;
+    line-height: 120px;
+}
+#dice1:hover {
+    cursor: pointer;
+}
+
+
+#dice2 {
+    font-size: 180px;
+    line-height: 120px;
+}
+#dice2:hover {
+    cursor: pointer;
+}
+
+
+#dice3 {
+    font-size: 180px;
+    line-height: 120px;
+}
+#dice3:hover {
+    cursor: pointer;  
+}
+
+
+#dice4 {
+    font-size: 180px;
+    line-height: 120px;
+}
+#dice4:hover {
+    cursor: pointer;
+}
+
+
+#dice5 {
+    font-size: 180px;
+    line-height: 120px;
+}
+#dice5:hover {
+    cursor: pointer;
+}
