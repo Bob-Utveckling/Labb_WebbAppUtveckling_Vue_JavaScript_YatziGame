@@ -3,11 +3,11 @@
 
 const store = new Vuex.Store({
     state: {
-        arrPlayers : [{"name":"test"}], //{"name":"Bamshad"}, {"name":"Igal"}, ...
+        currentPlayerId : -1,
         arrPlayerCards : [],
+        arrPlayers : [], //[{"name":"Bamshad"}, {"name":"Igal"}, ...]
 
         //==================
-        currentPlayer : 1,
 
         playerName : 'Anna',
         arrDiceValues : [3,2,5,4,1],
@@ -18,9 +18,7 @@ const store = new Vuex.Store({
         intThrow : 0, // 1 to 3
         arrDicesToRoll : [], // eg. [1,4,5] i.e. dice1, dice4,dice5 from the 5 dices
         arr5dicesValues: [],  // eg. [1,4,6,2,1]        
-        arrPossibleCategories :[] //eg. if dices1,1,1,1,4 then ["ettor", "två par"]
-    
-
+        arrPossibleCategories :[] //eg. if dices1,1,1,1,4 then ["ettor", "två par"]    
     },
     mutations: {
 
@@ -38,10 +36,24 @@ const store = new Vuex.Store({
             }
         },
 
+        setCurrentId (state, playerId) {
+           state.currentPlayerId = playerId;
+        }
         //===============================
-        setNextPlayer (currentPlayer) {
-            //given a player change to next.
-           state.currentPlayer++
+    },
+    getters: {
+        numberOfPlayers: state => {
+            return state.arrPlayers.length;
+        },
+        currentPlayerId: state => {
+            return state.currentPlayerId;
+        },
+        playerCards: state => {
+            return state.arrPlayerCards;
+        },
+
+        listOfPlayers: state => {
+            return state.arrPlayers;
         }
     }
 })
@@ -67,21 +79,47 @@ var app = new Vue({
     
     methods: {
 
+        setCurrentPlayerId: function(playerId) {
+            store.commit('setCurrentId', playerId)
+        },
+
+        getCurrentPlayerId: function() {
+            return store.getters.currentPlayerId;
+        },
+
+        setNexttPlayer: function() {
+            if (store.getters.numberOfPlayers == 0) {
+                console.log( err_1_setNextPlayer_noPlayerInList );
+                app.setCurrentPlayerId(0)
+            }
+            else if (store.getters.numberOfPlayers == 1) {
+                app.setCurrentPlayerId(0);
+            }
+            else if (store.getters.numberOfPlayers > 1 ) {
+                const tempPlayerId = app.getCurrentPlayerId() + 1;
+                if (tempPlayerId == store.getters.numberOfPlayers) {
+                    //was at last player
+                    app.setCurrentPlayerId(0);
+                } else { app.setCurrentPlayerId(tempPlayerId); }
+            }
+            console.log("- current player id set to" + app.getCurrentPlayerId());
+        },
+
         prepareAllPlayersCards: function() {
             var newCard = defaultCardTemplate;
-            for (i = 0; i < store.state.arrPlayers.length; i++) {
-                newCard.general.name = store.state.arrPlayers[i];
+            for (i = 0; i < store.getters.listOfPlayers.length; i++) {
+                newCard.general.name = store.getters.listOfPlayers[i].name;
                 store.commit('addCard', newCard);
                 //debugging:
-                console.log("--loop " + i);
+                //console.log("--loop " + i);
                 console.log ("- prepared card " + i + ". name on card: "
-                     + store.state.arrPlayerCards[i].general.name);
+                     + store.getters.playerCards[i].general.name);
             } 
         },
 
         startGame: function() {
             alert("start game..."); 
-            //+ store.state.arrPlayerCards[0].general.name);
+            //+ store.state.arrPlayerCards[0].general.name);            
             app.prepareAllPlayersCards();
         },
 
@@ -115,7 +153,8 @@ var app = new Vue({
         },
 */
         runThisFunction: function(value) {
-            
+            app.setNexttPlayer();
+
             //get dice values...could reutrn false if not all ready...maybe wait 2 seconds?
             //console.log ( getDiceValues() );
 
