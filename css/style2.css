@@ -1,0 +1,15 @@
+/* component */
+
+.newplayercomponent {
+    border: 1px solid rgb(233, 163, 34);
+    padding: 5px;
+    background-color:rgb(238, 225, 108);
+    font-family: Arial, Helvetica, sans-serif;
+    width:500px;
+}
+
+
+.button1 {
+    width: 150px;
+    height: 60px;
+}
