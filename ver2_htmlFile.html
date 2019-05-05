@@ -2,82 +2,81 @@
 
 <script src="./js/vue.js"></script>
 <script src="./js/vuex.js"></script>
-<script src="./js/PlayerCardTemplate.js"></script> <!-- PlayerCard -->
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="./css/style1.css">
+        <link rel="stylesheet" href="./css/style2.css">
     </head>
     <body>
-
-
-
-
-
-
-
-                <div id="fiveRows">
-                    <div id="row1_dices">
-                            <div id="allDicesRow">
-                                   <div id="dice1"></div> 
-                                   <div id="dice2"></div>
-                                    <div id="dice3"></div>
-                                    <div id="dice4"></div>
-                                    <div id="dice5"></div> 
-                            </div>            
-                    </div>
-                    <div id="row2_rollAll">
-                        Klicka för att kasta om alla tärningar
-                    </div>
-                    <div id="row3_rollSomeDices">
-                        Välj tärningar du vill kasta om...
-                    </div>
-                    <div id="row3_clickable_RollSomeDices">
-                        Kasta om...
-                    </div>
-            
-                    <div id="row4"> eller </div>
-                    <div id="row5_choseACategory"> Välj ett öppet kategori nedan</div> 
-                </div>
-            
-                    <!-- <div id="allDicesHolder"> dices
-                        <div id="dice"></div>
-                        <div id="dice2"></div>
-                        <div id="dice3"></div>
-                        <div id="dice4"></div>
-                        <div id="dice5"></div>
-                    </div> -->
-                    <!-- <div id="rollAgain">Kasta om all!</div> -->
-                    
-
-
-
-
-
-
-
-
-
         
-        <div id="gamecard">
-            <!-- not used {{ this.$store.playerName }} <br> -->
-            <!-- not used {{ showPlayerName }} <br> -->
-            <!-- {{ arrDiceValues }} <br> -->
-            <p style="height:200px; border:1px solid green; cursor:pointer; background-color: rgb(110, 211, 110)" 
-                v-on:click="runThisFunction">
-                Run Function
-                <br>
-                <!-- {{ strMatchedRules }} -->
-            </p>
-            <hr>
-            <div v-bind:class="test">Test div</div>
-
+        <div id="fiveRows">
+            <div id="row1_dices">
+                <div id="allDicesRow">
+                    <div id="dice1"></div> 
+                    <div id="dice2"></div>
+                    <div id="dice3"></div>
+                    <div id="dice4"></div>
+                    <div id="dice5"></div> 
+                </div>            
+            </div>
+            <div id="row2_rollAll">
+                Klicka för att kasta om alla tärningar
+            </div>
+            <div id="row3_rollSomeDices">
+                Välj tärningar du vill kasta om...
+            </div>
+            <div id="row3_clickable_RollSomeDices">
+                Kasta om...
+            </div>
+        
+            <div id="row4"> eller </div>
+            <div id="row5_choseACategory"> Välj ett öppet kategori nedan</div> 
         </div>
         
-        <div id="pageEnd"></div>    
-    </body>
-</html>
-
+        <!-- <div id="allDicesHolder"> dices
+            <div id="dice"></div>
+                <div id="dice2"></div>
+                <div id="dice3"></div>
+                <div id="dice4"></div>
+                <div id="dice5"></div>
+            </div> -->
+            <!-- <div id="rollAgain">Kasta om all!</div> -->
+                        
+            
+            <div id="yatziApp">
+            <!-- <div id="gamecard"> -->
+                <!-- not used {{ this.$store.playerName }} <br> -->
+                <!-- not used {{ showPlayerName }} <br> -->
+                <!-- {{ arrDiceValues }} <br> -->
+                <p style="height:200px; border:1px solid green; cursor:pointer; background-color: rgb(110, 211, 110)" 
+                v-on:click="runThisFunction">
+                    Run Function
+                    <br>
+                    <!-- {{ strMatchedRules }} -->
+                </p>
+                
+                <hr>
+                add-new-player-component...<br>
+                <add-new-player-component 
+                v-on:enter-name="addNewPlayer">
+                </add-new-player-component>
+                <hr>
+                start-game-component...<br>
+                <start-game-component></start-game-component>
+                
+                
+        <div id="pageEnd">
+            
+        </div>
+            
+    </div>
+        
+</body>
+    </html>
+    
 <script src="./js/ver1_FiveDiceFunctions.js"></script>
+<script src="./js/ver1_VueComponents.js"></script>
 <script src="./js/ver1_VueFile.js"></script>
+<script src="./js/PlayerCardTemplate.js"></script> <!-- PlayerCard -->
