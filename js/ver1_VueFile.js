@@ -3,9 +3,8 @@
 
 const store = new Vuex.Store({
     state: {
-        arrPlayers : [{"name":"Bamshad"}],
-        //arrPlayers : ["bob","bamshad"],
-        //aPlayCard: PlayCard,
+        arrPlayers : [{"name":"test"}], //{"name":"Bamshad"}, {"name":"Igal"}, ...
+        arrPlayerCards : [],
 
         //==================
         currentPlayer : 1,
@@ -25,10 +24,18 @@ const store = new Vuex.Store({
     },
     mutations: {
 
-        addNewPlayer(name) {
-            objNewPlayer = {"name":name}
-            //store.arrPlayers.add(objNewPlayer);
-            alert('test');
+        addCard(state, newPlaycard) {
+            state.arrPlayerCards.push(newPlaycard);
+        },
+
+        addPlayer(state, name) {
+            objNewPlayer = {"name":name};
+            state.arrPlayers.push(objNewPlayer);
+            //debugging:
+            console.log("show all players:");
+            for (i = 0; i < state.arrPlayers.length; i++) {
+                 console.log("player["+i+"]: " + store.state.arrPlayers[i].name);
+            }
         },
 
         //===============================
@@ -41,7 +48,7 @@ const store = new Vuex.Store({
 
 
 var app = new Vue({
-    el: '#gamecard',
+    el: '#yatziApp',
     store,
     /*data: {
         playerName : 'Anna',
@@ -57,14 +64,34 @@ var app = new Vue({
             return ("2 + 2 = " + ( 2 + 2) );
         }
     },
+    
     methods: {
 
-        addNewPlayer: function(newPlayerName) {
-            store.commit('addNewPlayer',newPlayerName)
-            alert("test1");
+        prepareAllPlayersCards: function() {
+            var newCard = defaultCardTemplate;
+            for (i = 0; i < store.state.arrPlayers.length; i++) {
+                newCard.general.name = store.state.arrPlayers[i];
+                store.commit('addCard', newCard);
+                //debugging:
+                console.log("--loop " + i);
+                console.log ("- prepared card " + i + ". name on card: "
+                     + store.state.arrPlayerCards[i].general.name);
+            } 
         },
 
+        startGame: function() {
+            alert("start game..."); 
+            //+ store.state.arrPlayerCards[0].general.name);
+            app.prepareAllPlayersCards();
+        },
 
+        addNewPlayer: function(newPlayerName) {           
+            store.commit('addPlayer',newPlayerName);
+        },
+
+        //======================
+
+        
 /*
         getDiceValues:  function() {
             //console.log("get dice values...")
@@ -87,15 +114,22 @@ var app = new Vue({
             alert(strMatchedRules);
         },
 */
-        runThisFunction: function() {
-           //works: alert(this.$store.state.arrDiceValues);
-           //works if store1 is the const and mentioned in vue: alert(store1.state.arrDiceValues);
-           //also works: alert(store.state.arrDiceValues);
-           //will not work: alert(this.$store.arrDiceValues);
-           this.addNewPlayer("Bob");
-           //alert ("show arrPlayers, second player's name")
-           alert (store.state.arrPlayers[1].name)
-        //    alert (store.state.currentPlayer)
+        runThisFunction: function(value) {
+            
+            //get dice values...could reutrn false if not all ready...maybe wait 2 seconds?
+            //console.log ( getDiceValues() );
+
+            //this.addNewPlayer("Bob");
+            //alert ("show arrPlayers, second player's name")
+            //alert (store.state.arrPlayers[1].name)
+            //will not work: alert (state.arrPlayers[1].name) but works if store mentioned
+            
+            //works: alert(this.$store.state.arrDiceValues);
+            //works if store1 is the const and mentioned in vue: alert(store1.state.arrDiceValues);
+            //also works: alert(store.state.arrDiceValues);
+            //will not work: alert(this.$store.arrDiceValues);
+            console.log("runThisFunction -- value received: " + value);
+           
         }
     }
 })

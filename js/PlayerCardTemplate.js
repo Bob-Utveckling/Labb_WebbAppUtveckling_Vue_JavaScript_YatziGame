@@ -1,4 +1,4 @@
-var PlayerCard =
+var defaultCardTemplate =
 	{
 		"general": {
 			"name": "PlayerName"
