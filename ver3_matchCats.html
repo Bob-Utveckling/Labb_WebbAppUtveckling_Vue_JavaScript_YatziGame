@@ -1,0 +1,276 @@
+
+<html>
+
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+Dices:<br>
+<div id="dices"></div>
+<b>
+
+allCards
+<div id="user1">
+<table id="player0" border=1>
+<tr id="ettor"><td>catName</td><td>userDices</td><td>userScore</td>
+<tr id="ettpar"><td>catName</td><td>userDices</td><td>userScore</td>
+<tr id="kal"><td>catName</td><td>userDices</td><td>userScore</td>
+<tr id="yatzi"><td>catName</td><td>userDices</td><td>userScore</td>
+<table>
+<p>
+Categories matched
+<div id="matchingCats"></div>
+
+</body>
+
+</html>
+
+
+<script>
+arrValidDices = [];
+sumOfDices = 0;
+arrCatMatchObjects = [];
+arrUserDices=[1,3,3,3,3];
+console.log("dices: " + arrUserDices);
+
+//thisMatchDetail = {"catName":"fyror", userDices:[4,4], userScore:8},
+
+arrToStr = function(givenArr) {
+		var tempStr;
+		tempStr = givenArr.toString();
+		tempStr = tempStr.replace(/,/g, "");	
+		return tempStr;
+}
+
+//does not work. returns:
+//tempSum: arr => arr.reduce((a,b) => a + b, 0)
+arrSum0 = function(arr) {
+		tempArrSum = arr => arr.reduce((a,b) => a + b, 0);
+		return tempArrSum;
+}
+
+arrSum = function (arr) {
+	tempArrSum = 0;
+	if (arr != null) {	//if valid arr sent
+		for (h=0; h<arr.length; h++) {
+			tempArrSum = tempArrSum + parseInt(arr[h]);
+		}
+		return tempArrSum;
+	}
+	else return 0;
+}
+
+isMoreThanZero = function (num) {
+	return ( num > 0 );
+}
+
+
+arrRuleNameRegistry = ["ettor", "tvaor", "treor", "fyror", "femmor", "sexor",
+						"ettpar", "tvapar", "tretal", "fyrtal", "litensteg", "storsteg",
+						"kak", "chans", "yatzi"];
+
+for (i=0; i < arrRuleNameRegistry.length; i++) {
+	console.log("\n________\ncheck rule: " + arrRuleNameRegistry[i] );
+	if (arrRuleNameRegistry[i] == "ettor") {
+			var catName = "ettor";
+			var patt1 = /(1)/g;
+			arrValidDices = (arrToStr(arrUserDices)).match(patt1); //eg. [1,1,1]
+			//console.log ("valid dices: " + arrValidDices);				
+			sumOfDices = arrSum(arrValidDices);				
+			if ( isMoreThanZero(sumOfDices) ) { //possible cat match
+				objReturn = {"catName":catName, "userDices":arrValidDices, "userScore": sumOfDices};
+				console.log (objReturn);
+				arrCatMatchObjects.push(objReturn);
+			}
+	} else if (arrRuleNameRegistry[i] == "tvaor") {
+			var catName = "tvaor";
+			var patt2 = /(2)/g;
+			arrValidDices = (arrToStr(arrUserDices)).match(patt2); //eg. [2,2] 
+			console.log ("valid dices: " + arrValidDices);				
+			sumOfDices = arrSum(arrValidDices);				
+			if ( isMoreThanZero(sumOfDices) ) { //possible cat match
+				objReturn = {"catName":catName, "userDices":arrValidDices, "userScore": sumOfDices};
+				console.log (objReturn);
+				arrCatMatchObjects.push(objReturn);
+			}
+	} else if (arrRuleNameRegistry[i] == "treor") {
+			var catName = "treor";
+			var patt3 = /(3)/g;
+			arrValidDices = (arrToStr(arrUserDices)).match(patt3); //eg. [3,3] 
+			console.log ("valid dices: " + arrValidDices);				
+			sumOfDices = arrSum(arrValidDices);				
+			if ( isMoreThanZero(sumOfDices) ) { //possible cat match
+				objReturn = {"catName":catName, "userDices":arrValidDices, "userScore": sumOfDices};
+				console.log (objReturn);
+				arrCatMatchObjects.push(objReturn);
+			}
+	} else if (arrRuleNameRegistry[i] == "fyror") {
+			var catName = "fyror";
+			var patt4 = /(4)/g;
+			arrValidDices = (arrToStr(arrUserDices)).match(patt4); //eg. [4,4] 
+			console.log ("valid dices: " + arrValidDices);				
+			sumOfDices = arrSum(arrValidDices);				
+			if ( isMoreThanZero(sumOfDices) ) { //possible cat match
+				objReturn = {"catName":catName, "userDices":arrValidDices, "userScore": sumOfDices};
+				console.log (objReturn);
+				arrCatMatchObjects.push(objReturn);
+			}
+	} else if (arrRuleNameRegistry[i] == "femmor") {
+			var catName = "femmor";
+			var patt5 = /(5)/g;
+			arrValidDices = (arrToStr(arrUserDices)).match(patt5); //eg. [5,5,5] 
+			console.log ("valid dices: " + arrValidDices);				
+			sumOfDices = arrSum(arrValidDices);				
+			if ( isMoreThanZero(sumOfDices) ) { //possible cat match
+				objReturn = {"catName":catName, "userDices":arrValidDices, "userScore": sumOfDices};
+				console.log (objReturn);
+				arrCatMatchObjects.push(objReturn);
+			}
+	} else if (arrRuleNameRegistry[i] == "sexor") {
+			var catName = "sexor";
+			var patt6 = /(6)/g;
+			arrValidDices = (arrToStr(arrUserDices)).match(patt6); //eg. [6,6,6] 
+			console.log ("valid dices: " + arrValidDices);				
+			sumOfDices = arrSum(arrValidDices);				
+			if ( isMoreThanZero(sumOfDices) ) { //possible cat match
+				objReturn = {"catName":catName, "userDices":arrValidDices, "userScore": sumOfDices};
+				console.log (objReturn);
+				arrCatMatchObjects.push(objReturn);
+			}
+	// ==============
+	// --- Ett par
+	} else if (arrRuleNameRegistry[i] == "ettpar") {
+			var catName = "ettpar";
+			var candidateForPair=1, arrDicesWithPair=[];
+			for (p1=0; p1<5; p1++) {
+				candidateForPair = arrUserDices[p1];
+				for (p2=0; p2<5; p2++) {
+					if (	( candidateForPair == arrUserDices[p2] )&
+							( p1 != p2 ) &
+							( arrDicesWithPair.indexOf( arrUserDices[p2] ) < 0 )
+							) {
+								//found pair. add this dice value to later find max
+								arrDicesWithPair.push(candidateForPair);
+					}
+				}
+			}
+			if ( arrDicesWithPair.length > 0 ) {
+				//has pairs
+				console.log("all possible pairs with dices: " + arrDicesWithPair);
+				arrObjReturn = [];
+				for (i1 = 0; i1 < arrDicesWithPair.length; i1++) {
+					arrObjReturn.push(
+						{"catName": catName, "userDices": [arrDicesWithPair[i1], arrDicesWithPair[i1]],
+							"userScore": 2*arrDicesWithPair[i1] },							
+					)
+				}
+				console.log(arrDicesWithPair.length +
+					" possible pairs to choose (as one pair!) from: " +
+					arrObjReturn);
+				arrCatMatchObjects.push({"catName": catName, arrObjReturn}); //note: can have two objs
+			}
+	// --- Två par
+	} else if (arrRuleNameRegistry[i] == "tvapar") {
+			var catName = "tvapar";
+			var arrDicesWithPair=[];				
+			candidateForPair = [-1,-1]; //these values will be set in following for loops so just place holders	
+			for (t = 0; t < 2; t++) {
+				for (p1=0; p1<5; p1++) {
+					candidateForPair[t] = arrUserDices[p1];
+					for (p2=0; p2<5; p2++) {
+						//check for pair 1:
+						if (	( candidateForPair[t] == arrUserDices[p2] )&
+								( p1 != p2 ) &
+								( arrDicesWithPair.indexOf( arrUserDices[p2] ) < 0 )
+								) {
+									console.log("found pair");
+									//found pair. add this dice pair as pair 1
+									arrDicesWithPair.push(candidateForPair[t]);
+						}
+					}
+				}
+			}
+			if ( arrDicesWithPair.length == 2 ) {
+				//has 2 dices, which will make 2 pairs
+				console.log("two pairs, i.e.: " + 
+					arrDicesWithPair[0] + " and " + arrDicesWithPair[0] + ", " +
+					arrDicesWithPair[1] + " and " + arrDicesWithPair[1]
+					);
+				objReturn = [];
+				objReturn.push(
+						{	"catName": catName,
+							"userDices": [	arrDicesWithPair[0], arrDicesWithPair[0],
+											arrDicesWithPair[1], arrDicesWithPair[1]
+										],
+							"userScore": (2*arrDicesWithPair[0] + 2*arrDicesWithPair[1])
+							},
+				)
+				arrCatMatchObjects.push(objReturn);
+			}
+	// --- Tretal			
+	} else if (arrRuleNameRegistry[i] == "tretal") {
+		var catName = "tvapar";
+		arrCurrentDice = [];
+		boolExit = false;
+		for (c1 = 0; c1 < 5; c1++) { //5 dices
+			for (c2 = 0; c2 < 5; c2++) {
+				if ( arrUserDices[c1] == arrUserDices[c2] & c1 != c2 ) {
+					for (c3 = 0; c3 < 5; c3++) {
+						if ( arrUserDices[c1] == arrUserDices[c3] & c1 != c2 & c2 != c3 ) {
+							console.log("found 3 similar dices");
+							arrValidDices = [arrUserDices[c1], arrUserDices[c2], arrUserDices[c3] ] //or all c1s or c2s
+							boolExit = true; //can exit for loops
+							objReturn = {"catName":catName, "userDices":arrValidDices, "userScore": arrSum(arrValidDices)};
+							console.log (objReturn);
+							arrCatMatchObjects.push(objReturn);
+						}
+						if (boolExit) { break; }
+					}
+				if (boolExit) { break; }
+				}
+			if (boolExit) { break; }
+			}
+			if (c1 > 2) {
+				//has passed checking an instance in first 3 nums
+				break;
+			}
+		}
+	}
+	
+}
+
+
+
+
+console.log ("all matched rules objects in array:" + arrCatMatchObjects)
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById("dices").innerHTML = arrUserDices;
+string1 = "<table border=1>";
+for ( i = 0; i < arrCatMatchObjects.length; i++) {
+	eachObj = arrCatMatchObjects[i];
+	string1 += "<tr>"
+				+ "<td> catName: " + eachObj.catName + "/<td>"
+				+ "<td> userDices: " + eachObj.userDices + "</td>"
+				+ "<td> userScore: " + eachObj.userScore + "</td>"
+				+ "</tr>";
+	
+}
+string1 += "</table>";
+
+document.getElementById("matchingCats").innerHTML = string1;
+//document.getElementById("ettpar").innerHTML...
+//catMathces add click event listener for this cat
+
+</script>
