@@ -1,0 +1,78 @@
+
+<html>
+    <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+
+    </body>
+</html>
+
+<script>
+    arrUserDices = [2,3,2,3,1];
+</script>
+<script src = "./js/RuleChecks.js"></script>
+<script>
+    var style = document.createElement('style');
+</script>
+
+
+<html>
+    <div id="topDiv"></div>
+    <div id="div1">Div 1</div>
+    <!-- <div id="player1_ettor">Fill cat detail</div> -->
+
+</html>
+
+
+<script>
+    function addCardField(strCurrentDivId,
+                            numPlayerId, strCatField,
+                            strFieldContent) {
+        newDivId = "player" + numPlayerId + "_" + strCatField;
+        style.innerHTML +=
+            "#" + newDivId + " {" +
+            "width: 100px; height: 50px; border: 1px  solid orange;" +
+            "} " ;    
+        // Get the first script tag
+        var ref = document.querySelector('script');
+        
+        // Insert the new style before the first script tag
+        ref.parentNode.insertBefore(style, ref);
+    
+        newDiv = document.createElement('div');
+        newDiv.setAttribute("id", newDivId);
+        newDiv.innerHTML = strFieldContent;  
+
+        currentDiv = document.getElementById(strCurrentDivId);
+        document.body.insertBefore(newDiv, currentDiv.nextSibling);
+    }
+
+currentDivId ="div1";
+playerId = 1;
+for (ruleNameCount = 0; ruleNameCount < arrRuleNameRegistry.length; ruleNameCount++) {
+    console.log("field for " + arrRuleNameRegistry[ruleNameCount]);
+    //arrRuleNameRegistry is from RuleChecks.js file
+
+    catField = arrRuleNameRegistry[ruleNameCount]; //"ettor";
+    fieldContent = "[] [] [] etc.";
+    addCardField(currentDivId, playerId, catField, fieldContent);
+    
+    currentDivId = "player" + playerId + "_" + catField; //update as current    
+}
+    
+    
+    /*newDiv.addEventListener("click", function() {
+            alert("fill cat function");
+        });
+
+
+        alert(sumOfDices);
+        */
+
+
+
+
+
+</script>
+
