@@ -13,3 +13,11 @@
     width: 150px;
     height: 60px;
 }
+
+
+/* for card display component */
+#AllCards {
+	width:100%; 
+	border:1px solid orange;
+	display: inline-block;
+}
