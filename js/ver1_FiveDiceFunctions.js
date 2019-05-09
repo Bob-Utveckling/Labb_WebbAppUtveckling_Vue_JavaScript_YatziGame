@@ -9,17 +9,17 @@ function setRandomPeriod() {
     }
 
   //return all dices values
-  function getDiceValues(whichDices) {
-        console.log("get all dice values...")
+  function getDiceValues() {
+        console.log("- get all dice values...")
         if (boolDice1Ready & 
             boolDice2Ready &
             boolDice3Ready &
             boolDice4Ready &
-            boolDice5Ready) {
+            boolDice5Ready) {              
                 return [dice1Value, dice2Value, dice3Value, dice4Value, dice5Value];
             }
         else {
-            console.log("do check: dices are not stopped before getting all dice values.");
+            console.log("- do check: dices are not stopped before getting all dice values.");
             return ([0,0,0,0,0]);
         }
     }

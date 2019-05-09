@@ -3,13 +3,12 @@
 
 const store = new Vuex.Store({
     state: {
+        arrPlayerMatchingCats: [],
         currentPlayerId : -1,
         arrPlayerCards : [],
         arrPlayers : [], //[{"name":"Bamshad"}, {"name":"Igal"}, ...]
 
         //==================
-
-        playerName : 'Anna',
         arrDiceValues : [3,2,5,4,1],
         strMatchedRules : "-",
 
@@ -21,6 +20,9 @@ const store = new Vuex.Store({
         arrPossibleCategories :[] //eg. if dices1,1,1,1,4 then ["ettor", "två par"]    
     },
     mutations: {
+        setListOfMatchingCats(state, matchingCats) {
+            state.arrPlayerMatchingCats = matchingCats;
+        },
 
         addCard(state, newPlaycard) {
             state.arrPlayerCards.push(newPlaycard);
@@ -42,6 +44,9 @@ const store = new Vuex.Store({
         //===============================
     },
     getters: {
+        playerMatchingCats: state => {
+            return state.arrPlayerMatchingCats;
+        },
         numberOfPlayers: state => {
             return state.arrPlayers.length;
         },
@@ -78,6 +83,20 @@ var app = new Vue({
     },
     
     methods: {
+
+        findMatchingCats: function(arrUserDices) {
+            console.log("-received dice values: "+ arrUserDices);
+            for (i = 0; i < 5; i++) {
+                //do for each dice
+                //if (user)
+            }
+            var catsMatched = ["ettor","ettpar","chans"];
+            store.commit('setListOfMatchingCats', catsMatched);
+            //debug:
+            console.log("work with matching cats: " + 
+                store.getters.playerMatchingCats);
+
+        },
 
         setCurrentPlayerId: function(playerId) {
             store.commit('setCurrentId', playerId)
@@ -153,7 +172,9 @@ var app = new Vue({
         },
 */
         runThisFunction: function(value) {
-            app.setNexttPlayer();
+            app.findMatchingCats( getDiceValues() );
+
+            //app.setNexttPlayer(); //will go through list and sets it
 
             //get dice values...could reutrn false if not all ready...maybe wait 2 seconds?
             //console.log ( getDiceValues() );
@@ -167,7 +188,7 @@ var app = new Vue({
             //works if store1 is the const and mentioned in vue: alert(store1.state.arrDiceValues);
             //also works: alert(store.state.arrDiceValues);
             //will not work: alert(this.$store.arrDiceValues);
-            console.log("runThisFunction -- value received: " + value);
+            console.log("- runThisFunction -- value received: " + value);
            
         }
     }
