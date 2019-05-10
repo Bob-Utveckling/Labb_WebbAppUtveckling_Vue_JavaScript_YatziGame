@@ -57,9 +57,9 @@
     }
 
 
-    function prepareOnePlayerCard(thisPlayerId, thisPlayerCard) {
+    function prepareOnePlayerCard(tempStartDiv, thisPlayerId, thisPlayerCard) {
         console.log("preparing one player card given: " + thisPlayerId + " and " + thisPlayerCard);
-        currentDivId ="card1div1";
+        currentDivId = tempStartDiv;
         //arrRuleNameRegistry is from RuleChecks.js file:
         for (ruleNameCount = 0; ruleNameCount < arrRuleNameRegistry.length; ruleNameCount++) {
             console.log("field for " + arrRuleNameRegistry[ruleNameCount]);
@@ -90,7 +90,7 @@
             cardId = "card" + divCount;
             newCardDiv.setAttribute("id", cardId);
             newCardDiv.style ="border: 2px solid orange; display:inline-block;"
-            newCardDiv.innerHTML = cardId;  
+            newCardDiv.innerHTML = "id: " + cardId;  
             divPlaceHolder.appendChild(newCardDiv);
         }
     }
@@ -98,17 +98,17 @@
     
     function putEachCardInPlace () {
         for (playerIdCount = 0; playerIdCount < arrPlayersObj.length; playerIdCount++ ) {                        
-            var currentCardDivId = "card" + playerIdCount;
-            var card = document.getElementById(currentCardDivId);
-            //alert(currentCardDivId);
-            tempDiv = currentCardDivId + "div1";
-            newContent = "<br><be>CONTENT OF EACH CARD " + currentCardDivId + 
+            var cardId = "card" + playerIdCount;
+            var card = document.getElementById(cardId);
+            //alert(cardId);
+            tempStartDiv = cardId + "div1";
+            newContent = "<br><be>CONTENT OF EACH CARD " + cardId + 
                 "<br>" +
-                "<div id='" + tempDiv + "'>" + tempDiv + "</div>";
+                "<div id='" + tempStartDiv + "'> temp start div id:" + tempStartDiv + "</div>";
             // card.appendChild(newContent);
             card.innerHTML += newContent;
 
-            prepareOnePlayerCard(playerIdCount, arrPlayerCards[playerIdCount]);
+            prepareOnePlayerCard(tempStartDiv, playerIdCount, arrPlayerCards[playerIdCount]);
         }
     }
 
