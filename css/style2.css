@@ -16,8 +16,151 @@
 
 
 /* for card display component */
+#CardsFrame {
+    display: inline-block;
+    width:100%;
+    border:5px solid green;
+}
+
 #AllCards {
-	width:100%; 
-	border:1px solid orange;
+    border:0px solid rgb(122, 82, 8);
 	display: inline-block;
+}
+
+#cardGuide_generalFields * {
+    background-color: beige;
+    border: 1px solid brown;
+    font-family: Arial, Helvetica, sans-serif;
+    height:35px;
+}
+
+#cardGuid_playerName {
+    padding: 5px;
+    font-size: 20px;
+    background-color: rgb(85, 243, 85);
+    border: 1px solid rgb(223, 113, 113);
+}
+
+#cardGuide_summa {
+    background-color: rgb(167, 233, 159);
+    border: 1px solid rgb(216, 132, 132);
+
+}
+
+#cardGuide_bonus {
+    background-color: rgb(186, 235, 140);
+    border: 1px solid rgb(247, 119, 119);
+}
+
+#cardGuide_total {
+    background-color: rgb(200, 235, 168);
+    border: 1px solid rgb(250, 110, 110);
+}
+
+/* card for example player Anna */
+
+#cardAnna_generalFields * {
+    background-color: beige;
+    border: 1px solid brown;
+    font-family: Arial, Helvetica, sans-serif;
+
+    height:35px;
+}
+
+#cardAnna_playerName {
+    padding: 5px;
+    font-size: 20px;
+    background-color: rgb(85, 243, 85);
+    border: 1px solid rgb(223, 113, 113);
+}
+
+#cardAnna_summa {
+    background-color: rgb(167, 233, 159);
+    border: 1px solid rgb(216, 132, 132);
+
+}
+
+#cardAnna_bonus {
+    background-color: rgb(186, 235, 140);
+    border: 1px solid rgb(247, 119, 119);
+}
+
+#cardAnna_total {
+    background-color: rgb(200, 235, 168);
+    border: 1px solid rgb(250, 110, 110);
+}
+
+/* for dice pictures */
+#diceImgHolder {
+    display: inline-block;
+    background-color: white;
+    border: 0px solid white;
+    /*width: 70px;*/
+}
+#dice1img {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+#dice2img {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+#dice3img {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+#dice4img {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+#dice5img {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+
+#dice6img {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+
+#diceximg {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+
+#diceyimg {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+
+#diceyatziimg {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 0px solid white;
+}
+
+/* for some game info component */
+#infoBox {
+    border: 1px solid rgb(113, 113, 238);
+    width: 200px;
+    background-color: lightblue;
+    padding: 5px;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
 }
