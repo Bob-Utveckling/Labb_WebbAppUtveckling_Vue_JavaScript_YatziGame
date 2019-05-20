@@ -52,7 +52,7 @@
                 <!-- {{ arrDiceValues }} <br> -->
                 <p style="height:200px; border:1px solid green; cursor:pointer; background-color: rgb(110, 211, 110)" 
                 v-on:click="runThisFunction">
-                    Run Function
+                    Run Function: First Add Players. Click Here For Dice Checks and Category Selection.
                     <br>
                     <!-- {{ strMatchedRules }} -->
                 </p>
@@ -65,7 +65,13 @@
                 <hr>
                 start-game-component...<br>
                 <start-game-component></start-game-component>
-                
+                <hr>
+                players-cards-component...<br>
+                <players-cards-component ref="cardComponent123"></players-cards-component>
+                <hr>
+                some-game-info-component...<br>
+                <some-game-info-component>
+                </some-game-info-component>
                 
         <div id="pageEnd">
             
@@ -78,6 +84,11 @@
 
 <script src="./js/errMessages.js"></script>    
 <script src="./js/PlayerCardTemplate.js"></script> <!-- PlayerCard -->
+<script>
+    arrUserDices = [2,3,2,3,1];   
+    arrPlayersObj = [{"name":"Bamshad"}, {"name":"Igal"}, {"name":"Pip"}]; //temp
+</script>
+<script src ="./js/MatchCats.js"></script>
 <script src="./js/ver1_FiveDiceFunctions.js"></script>
 <script src="./js/ver1_VueComponents.js"></script>
 <script src="./js/ver1_VueFile.js"></script>
