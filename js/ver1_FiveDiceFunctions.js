@@ -220,8 +220,14 @@ function stopstart5() {
   }
 
 
-
-
+function rollAllDices() {
+  console.log("- roll all dices..")
+  startStopRandomly1();
+  startStopRandomly2();
+  startStopRandomly3();
+  startStopRandomly4();
+  startStopRandomly5();
+}
 
 
 
@@ -301,10 +307,10 @@ prepareToRollAgain = function (whichDice) {
               break;
       }
       //switch message container if dices selected or all desselected
-      //do base on values in arrSelectedDices
-      arrSum = arr => arr.reduce((a,b) => a + b, 0);
-      console.log("arrSum(arrSelectedDices): " + arrSum(arrSelectedDices) );
-      if ( arrSum(arrSelectedDices) == 0 ) {
+      //do based on values in arrSelectedDices
+      arrSumCountDices = arr => arr.reduce((a,b) => a + b, 0);
+      console.log("arrSum(arrSelectedDices): " + arrSumCountDices(arrSelectedDices) );
+      if ( arrSumCountDices(arrSelectedDices) == 0 ) {
         //dice array shows all as unselected
         document.getElementById("row3_rollSomeDices").style.display="inline";
         document.getElementById("row3_clickable_RollSomeDices").style.display="none";
