@@ -39,7 +39,7 @@ arrRuleNameRegistry = ["ettor", "tvaor", "treor", "fyror", "femmor", "sexor",
 						"kak", "chans", "yatzi"];
 window.arrRuleNameRegistry = arrRuleNameRegistry;
 
-fintMatchingCats = function(arrUserDices) {
+file1_findMatchingCats = function(arrUserDices) {
 	console.log("- match cats with dices: " + arrUserDices); //arrUserDices=[5,5,2,5,2]
 	arrValidDices = [];
 	sumOfDices = 0;

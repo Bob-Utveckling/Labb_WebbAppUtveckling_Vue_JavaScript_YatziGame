@@ -3,6 +3,11 @@ var defaultCardTemplate =
 		"general": {
 			"name": "PlayerName"
 		},
+		
+		"gameTime": {
+			"round": 1,
+			"roll": 1
+		},
 
 		"categories": [{
 				"catName": "ettor",
