@@ -54,8 +54,8 @@ Vue.component('players-cards-component', {
       return {
         //arrUserDices : [2,3,2,3,1],
         //arrPlayersObj : [{"name":"Bamshad"}, {"name":"Igal"}, {"name":"Pip"}], //temp
-        //arrPlayerCards : [],
-            //arrPlayerCards[0] : defaultCardTemplate, arrPlayerCards[1] : defaultCardTemplate
+        //PlCrComp_arrPlayerCards : [],
+            //PlCrComp_arrPlayerCards[0] : defaultCardTemplate, PlCrComp_arrPlayerCards[1] : defaultCardTemplate
       }
     },
     methods: {
@@ -76,9 +76,9 @@ Vue.component('players-cards-component', {
         },
 
         prepareHowManyCards: function(howManyCards) {
-            arrPlayerCards = [];
+            PlCrComp_arrPlayerCards = [];
             for (cardCountI=0; cardCountI < howManyCards; cardCountI++) {
-                arrPlayerCards[cardCountI] = defaultCardTemplate;
+                PlCrComp_arrPlayerCards[cardCountI] = defaultCardTemplate;
             }
         },
 
@@ -93,8 +93,9 @@ Vue.component('players-cards-component', {
 
         prepareTheFieldsForThisCard: function(cardi, thisPlayerName) {
                 console.log("-- card " + cardi);
+                // alert("-- card " + cardi);
                 cardId = "card" + cardi;
-                card = document.getElementById(cardId);
+                prepCard = document.getElementById(cardId);
                 
 
                 //prepare name field
@@ -107,10 +108,10 @@ Vue.component('players-cards-component', {
                 thisDiv.style.padding = "5px";
                 thisDiv.style.height = "35px";
                 thisDiv.innerHTML = thisPlayerName;
-                card.appendChild(thisDiv);
+                prepCard.appendChild(thisDiv);
                 
                 for ( fieldi = 0; fieldi < arrRuleNameRegistry.length; fieldi ++) {
-                    var catName = arrPlayerCards[cardi].categories[fieldi].catName;
+                    var catName = PlCrComp_arrPlayerCards[cardi].categories[fieldi].catName;
                     console.log("do field of rule: " + fieldi);
                     thisDiv.style.fontFamily = "Arial, Helvetica, sans-serif";
                     
@@ -124,7 +125,7 @@ Vue.component('players-cards-component', {
                         
                         thisDiv.id  = cardId + "_" + "summa"; //card0_summa                        
                         thisDiv.innerHTML = " - ";
-                        card.appendChild(thisDiv);
+                        prepCard.appendChild(thisDiv);
 
                         //add bonus field
                         thisDiv = document.createElement('div');
@@ -135,7 +136,7 @@ Vue.component('players-cards-component', {
                         
                         thisDiv.id  = cardId + "_" + "bonus"; //card0_bonus                        
                         thisDiv.innerHTML = " - ";
-                        card.appendChild(thisDiv);
+                        prepCard.appendChild(thisDiv);
                     }
 
                     thisDiv = document.createElement('div');
@@ -145,7 +146,7 @@ Vue.component('players-cards-component', {
                     thisDiv.style.height = "35px";  
                     thisDiv.innerHTML = this.returnFinalCatHTML(cardi, fieldi);
                     // "id: " + thisDiv.id + "... " + "catName: " + catName + "... etc";
-                    card.appendChild(thisDiv);
+                    prepCard.appendChild(thisDiv);
                 }
                 thisDiv = document.createElement('div');
                 thisDiv.id = cardId + "_" + "total"; //card0_ettor                          
@@ -153,7 +154,7 @@ Vue.component('players-cards-component', {
                 thisDiv.style.border = "1px solid rgb(250, 110, 110)";  
                 thisDiv.style.height = "35px";  
                 thisDiv.innerHTML = "id: " + thisDiv.id + "... etc";
-                card.appendChild(thisDiv);
+                prepCard.appendChild(thisDiv);
 
         },
 
@@ -384,22 +385,56 @@ Vue.component('some-game-info-component', {
 
     },
     computed: {
-        round: function() {
+        getCurrentPlayer: function() {
+            return this.$store.getters.currentPlayerId;
+        },
+        getPlayerName: function() {
+            if (this.$store.getters.playerDetail == null) {
+                return " ";
+            } else {
+                return this.$store.getters.playerDetail.name;
+            }            
+        },
+        getPlayerNote: function() {
+            var thisNote = "";
+            if (this.$store.getters.playerDetail == null) {
+                thisNote  = "No player added."
+            }
+            else {
+                thisNote =  "Player " +
+                    (this.$store.getters.currentPlayerId + 1) +
+                    ", " + this.$store.getters.playerDetail.name +
+                    " -- Kör!";
+            }
+            return thisNote;
+        },
+
+        getRound: function() {
             //can get fom current player
             //this.currentPlayer
             //return this.$store.getters.listOfPlayers[0].round
-            return 1
+            if (this.$store.getters.playerDetail == null) {
+                return " - ";
+            } else {
+                return this.$store.getters.playerDetail.round;
+            };
+            // return 1
         },
-        roll: function() {
+        getRoll: function() {
             //can be from current player
-            return 1
+            if (this.$store.getters.playerDetail == null) {
+                return " - ";
+            } else {
+                return this.$store.getters.playerDetail.roll;
+            };
+            // return 1;
         }
     },
     template: `
         <div id="infoBox">
-        - Player {{ currentPlayer + 1 }}! Kör! <br><br>
-        - round {{ round }} of 13 <br>
-        - roll {{ roll }} of 3 <br>
+        - {{ getPlayerNote }} <br>
+        - round {{ getRound }} of 13 <br>
+        - roll {{ getRoll }} of 3 <br>
         </div>
     `
 })
