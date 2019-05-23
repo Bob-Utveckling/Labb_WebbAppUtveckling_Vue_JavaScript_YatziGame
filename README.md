@@ -8,5 +8,7 @@ The program can:
 - can add as many names of players/cards to extend number of players
 - have functions to set current player id, and to go through player list and set to next
 - go through all 15 Yatzi rules for a player with 5 dices and match any number of categories with a given five dices
-- can roll all or selected dices and see all matched cats with the category dice-suggestion and the resulted score
-- can select a dice category to register the dices at.
+- roll all or selected dices and see all matched cats with the category dice-suggestion and the resulted score
+- select a dice category to register the dices at.
+- show current user name, round and roll with its own component.
+- go through the Yatzi game process with a start and continue feature (currently partially implemented)
