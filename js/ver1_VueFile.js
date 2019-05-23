@@ -7,8 +7,10 @@ const store = new Vuex.Store({
         arrPlayerCatMatchObjects: [],
         arrPlayerCatNames: [],
         currentPlayerId : 0,
-        arrPlayers : [], //[{"name":"bob", "round":1, "throw":1}, {...]
+        arrPlayers : [], //[{"name":"bob", "round":1, "roll":1}, {...]
         arrPlayerCards : [],
+
+        strMessage: "",
 
         //==================
         arrDiceValues : [3,2,5,4,1],
@@ -21,6 +23,7 @@ const store = new Vuex.Store({
         arrPossibleCategories :[] //eg. if dices1,1,1,1,4 then ["ettor", "två par"]    
     },
     mutations: {
+        // keep array of open cats... is based on matched cats
         keepArrOfOpenCatsObjects(state, getOpenCatObjects) {
             state.arrPlayerOpenCatsObjects = getOpenCatObjects;
         },
@@ -29,15 +32,21 @@ const store = new Vuex.Store({
             state.arrPlayerCatMatchObjects = getCatMatchObjects;
         },
 
+        // keep only matched cats' names
         keppArrOfMatchedCatNames(state, matchingCats) {
             state.arrPlayerCatNames = matchingCats;
         },
 
         updateCard(state, payload) {
             // playerId, playerCard
-            // alert("update card mutation called" +
-            // "with payload playerId and playerCard");
-            state.arrPlayerCards[payload.playerId] = payload.playerCard;            
+            //  alert("update card: " + payload.playerId +
+            //      " via mutation...");
+            //  alert("store.getters.playerCards[0].categories[13].userScore: " +
+            //      store.getters.playerCards[0].categories[13].userScore);
+            //  alert("store.getters.playerCards[1].categories[13].userScore: " +
+            //      store.getters.playerCards[1].categories[13].userScore);
+             
+             state.arrPlayerCards[payload.playerId] = payload.playerCard;            
         },
 
         addCard(state, newPlaycard) {
@@ -46,13 +55,15 @@ const store = new Vuex.Store({
 
         addPlayer(state, name) {
             objNewPlayer = {"name":name, "round":1, "roll":1};
+            //add to players array:
             state.arrPlayers.push(objNewPlayer);
+            //add to cards array:
+            app.prepareOneNewPlayerCard(name);
             //debugging:
             console.log("show all players:");
             for (i = 0; i < state.arrPlayers.length; i++) {
                  console.log("player["+i+"] name: " + store.state.arrPlayers[i].name);
             }
-            app.prepareAllPlayersCards();
         },
 
         setCurrentId (state, playerId) {
@@ -82,10 +93,11 @@ const store = new Vuex.Store({
         playerName: state => {
                 // return state.arrPlayers[state.currentPlayerId].name;
                 return "name123";            
-        },
+            },
         playerDetail : state => {
-
-            return state.intRound;
+            return state.arrPlayers[state.currentPlayerId];
+            // return state.intRound;
+            // return state.arrPlayersintRound;
         },
         playerCards: state => {
             return state.arrPlayerCards;
@@ -117,12 +129,33 @@ var app = new Vue({
     
     methods: {
 
+        //show and hide
+        showAndHideMessage: function (getMessage, getTimer) {
+            store.state.strMessage = getMessage; //
+            this.showOrHideModalBox("show", getMessage);
+            setTimeout(function() {
+                app.showOrHideModalBox("hide", "");
+           }, getTimer);            
+        },
+
+        //show or hide depending on the parameter
+        showOrHideModalBox: function(getShowOrHide, getMessage) {
+            modalMessage = document.getElementById("modalMessage").innerHTML = getMessage;
+            modal = document.getElementById("myModal");
+            if (getShowOrHide=="show") {
+                modal.style.display="block";
+            } else if (getShowOrHide=="hide") {
+                modal.style.display="none";
+            }
+        },
+
         rerenderCard: function(playerId) {
             cardWithId = "card" + playerId;
-            // alert("rerender " + cardId);
+            //  alert("rerender " + cardWithId);
             //first clear innerHTML...
             document.getElementById(cardWithId).innerHTML = "";
-            app.$refs.cardComponent123.prepareTheFieldsForThisCard(playerId, "emptyjustnow");                            
+            app.$refs.cardComponent123.prepareTheFieldsForThisCard(playerId, 
+                                            store.getters.listOfPlayers[playerId].name);
         },
 
         registerThisOpenCatToCard: function(getCatObj) {
@@ -136,16 +169,16 @@ var app = new Vue({
             // alert("currentPlayer:" + store.getters.currentPlayerId);
             
             currentCard = store.getters.playerCards[store.getters.currentPlayerId];
-            
-            // alert ("go through " + window.arrRuleNameRegistry.length + " cats and fill the right one" );
+            var cardCat; //iteration time cat rule name
             for (countCatI=0; countCatI <  window.arrRuleNameRegistry.length; countCatI++ ) {
-                var cardCat = window.arrRuleNameRegistry[countCatI];
-                if (toRegisterCatName == cardCat) {
-                    // alert ("will now update cat " + toRegisterCatName + " in card");
+                cardCat = window.arrRuleNameRegistry[countCatI];
+                if (cardCat == toRegisterCatName) {
+                    // alert ("will now update cat " + toRegisterCatName + " in card "+ store.getters.currentPlayerId);
                     currentCard.categories[countCatI].userDices = toRegisterDices;
                     currentCard.categories[countCatI].userScore = toRegisterScore;
                     currentCard.categories[countCatI].filled = true;
                     // alert("has updated card. now mutate in arr. then rerender card");
+                    // alert ("registerThisOpenCatToCard...");
                     store.commit({
                             type: 'updateCard',
                             playerId: store.getters.currentPlayerId,
@@ -154,6 +187,11 @@ var app = new Vue({
                 }
             }
             app.rerenderCard(store.getters.currentPlayerId);
+
+            //continue game process with next step:
+            app.showAndHideMessage(message4_NextPlayersTurn, 2000);
+            app.setNexttPlayer();
+            app.continueGame();
         },
 
         returnHTMLForDices: function(arrDices) {
@@ -184,10 +222,21 @@ var app = new Vue({
             //add clickable and add function to register the cat on click
             document.getElementById(divId).addEventListener("click", function() {
                 app.registerThisOpenCatToCard(catObj);
+
+                // alert("after register cat called...store.getters.playerCards[0].categories[13].userScore: " +
+                // store.getters.playerCards[0].categories[13].userScore);
+                // alert("after register cat called...store.getters.playerCards[1].categories[13].userScore: " +
+                // store.getters.playerCards[1].categories[13].userScore);
+   
             })
         },
 
         highlightOpenCats: function() {
+            // alert("highlight...store.getters.playerCards[0].categories[13].userScore: " +
+            // store.getters.playerCards[0].categories[13].userScore);
+            // alert("highlight...store.getters.playerCards[1].categories[13].userScore: " +
+            // store.getters.playerCards[1].categories[13].userScore);
+
             playerId =  this.getCurrentPlayerId();
             var theseOpenCatObjs = store.getters.playerOpenCatObjects;
 
@@ -199,20 +248,29 @@ var app = new Vue({
             }
         },
 
+        //check for a true/false and return this boolean, message otherwise.
+        thisCardCategoryFilled: function(getCatName) {
+            playerCard = store.getters.playerCards[store.getters.currentPlayerId];
+            for (catNameI=0; catNameI<arrRuleNameRegistry.length; catNameI++) {
+                if (getCatName == playerCard.categories[catNameI].catName) {
+                    return playerCard.categories[catNameI].filled;
+                }
+            }
+            return ("thisCardCategoryFilled returned undefined");
+        },
+
         findOpenCats: function() {
             playerId = store.getters.currentPlayerId;
             playerCard = store.getters.playerCards[playerId];
             playerMatchCatObjects = store.getters.playerMatchCatObjects;
-
             console.log("playerId: "+ playerId);
             console.log("playerCard: "+ playerCard);
             console.log("playerMatchCatObjects: " + playerMatchCatObjects);
             arrOpenCatsObjs = []
             for (catObjI=0; catObjI<playerMatchCatObjects.length; catObjI++) {
                 thisObj = playerMatchCatObjects[catObjI];
-                console.log ( "- "  + thisObj.catName);
-                if (!thisObj.filled) {
-                    console.log("-- is open cat");
+                if (!app.thisCardCategoryFilled( thisObj.catName)) {
+                    console.log("-- " + thisObj.catName + " is open cat");
                     arrOpenCatsObjs.push(thisObj);
                 }
             }
@@ -222,69 +280,15 @@ var app = new Vue({
             return (store.getters.playerOpenCatObjects);
         },
 
-        cardFieldIdMatches: function() { //temporary function
-        //return all (filled or not filed) player card matched div ids
-        playerId =  this.getCurrentPlayerId();
-        console.log ( "player id: " + playerId);  
-        arrMatchedCatNames = store.getters.playerMatchCatNames      
-        console.log( "cats: " + arrMatchedCatNames);
-        var arrCardDivs = [];
-        for (cardDivi = 0; cardDivi < arrMatchedCatNames.length; cardDivi++) {
-            var thisDivId = "card" + playerId + "_" + arrMatchedCatNames[cardDivi];
-                        
-            //fix: following only if div empty or available
-            arrCardDivs.push(thisDivId);
-
-            //then temp -- highlight the div:
-            document.getElementById(thisDivId).style="border:2px solid orange;"
-
-            //temp -- do html content:
-            var thisCatName = store.getters.playerMatchCatObjects[cardDivi].catName;
-            var thisCatUserDices = store.getters.playerMatchCatObjects[cardDivi].userDices;
-            var thisUserScore = store.getters.playerMatchCatObjects[cardDivi].userScore;
-            
-            var htmlForCat = thisCatName +
-                " | " + thisCatUserDices +
-                " | " + thisUserScore;
-
-            document.getElementById(thisDivId).innerHTML = htmlForCat;
-            document.getElementById(thisDivId).setAttribute("catName", thisCatName);
-        }
-
-        //temp -- make clickable
-        for (clickableI=0; clickableI < arrCardDivs.length; clickableI++) {
-            thisDiv = arrCardDivs[clickableI];
-            document.getElementById(thisDiv).addEventListener("click", function() {
-                alert("register category at player card." + playerId + 
-                    "\nmore detail available... " + 
-                    document.getElementById(thisDiv).getAttribute("catName")
-                    );
-                })
-        }
-        
-
-        console.log(arrCardDivs);
-        // console.log( "objs: " + store.getters.playerMatchCatObjects);
-
-
-        //return divs that are not filled
-
-        //show an inner HTML for them
-
-        //add clickable to them
-        },
-
-
-
         findMatchingCats: function(arrUserDices) {
             //call functions from MatchCats.js
-            var arrObjs = fintMatchingCats(arrUserDices);
+            var arrObjs = file1_findMatchingCats(arrUserDices);
             //save matched cats objs, also names, to store
             store.commit('keepArrOfCatObjects', arrObjs);   //the whole cat objects                     
             var catNames = return_MatchedCatNames(arrObjs);            
             store.commit('keppArrOfMatchedCatNames', catNames); //only cat names
             //debug:
-            console.log("- cats: " + catNames + " can be suggested")
+            console.log("- cats: " + catNames + " have matched.")
             console.log("work with matching cats: " + 
                 store.getters.playerMatchCatNames);
 
@@ -313,7 +317,7 @@ var app = new Vue({
                     app.setCurrentPlayerId(0);
                 } else { app.setCurrentPlayerId(tempPlayerId); }
             }
-            console.log("- current player id set to" + app.getCurrentPlayerId());
+            console.log("- current player id set to " + app.getCurrentPlayerId());
         },
 
         prepareAllPlayersCards: function() {
@@ -325,13 +329,36 @@ var app = new Vue({
                 //console.log("--loop " + i);
                 console.log ("- prepared card " + i + ". name on card: "
                      + store.getters.playerCards[i].general.name);
-            } 
+                    } 
+        },
+
+        prepareOneNewPlayerCard: function(getPlayerName) {
+            var newCard = defaultCardTemplate;
+            newCard.general.name = getPlayerName;
+            store.commit('addCard', newCard);
+        },
+
+        continueGame: function() {
+
+            setTimeout(function() {
+                rollAllDices()
+           }, 1200);
+            
+           setTimeout(function() {
+                app.showAndHideMessage(message3_ChooseCategory, 2000);
+                   console.log(" * * * * * * *");
+                   app.findMatchingCats( getDiceValues() );
+                   app.findOpenCats();
+                   app.highlightOpenCats();
+            }, 4000);
         },
 
         startGame: function() {
-            alert("start game..."); 
+            store.state.strMessage = message1_RollDices;
+            app.showAndHideMessage(store.state.strMessage, 1000);
+            app.continueGame();
             // store.state.arrPlayerCards[0].general.name);            
-            app.prepareAllPlayersCards();
+            // app.prepareAllPlayersCards();
         },
 
         addNewPlayer: function(newPlayerName) {     
@@ -393,5 +420,15 @@ var app = new Vue({
             console.log("- runThisFunction -- value received: " + value);
            
         }
+    },
+    mounted() {
+        store.state.strMessage = message2_Welcome;
+        this.showOrHideModalBox("show",store.state.strMessage);
+     
+        setTimeout(function() {
+             app.showOrHideModalBox("hide", "");
+        }, 3000);
     }
 })
+
+
