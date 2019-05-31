@@ -3,6 +3,8 @@
 
 const store = new Vuex.Store({
     state: {
+        boolGameStarted: false,
+
         arrPlayerOpenCatsObjects: [],
         arrPlayerCatMatchObjects: [],
         arrPlayerCatNames: [],
@@ -23,6 +25,16 @@ const store = new Vuex.Store({
         arrPossibleCategories :[] //eg. if dices1,1,1,1,4 then ["ettor", "två par"]    
     },
     mutations: {
+
+        setPlayerRollTo0(state) {
+            store.state.arrPlayers[store.getters.currentPlayerId].roll=0;
+        },
+
+        incremetPlayerRoundBy1(state) {
+            //if reach 13...work here//
+            store.state.arrPlayers[store.getters.currentPlayerId].round += 1;
+        },
+
         // keep array of open cats... is based on matched cats
         keepArrOfOpenCatsObjects(state, getOpenCatObjects) {
             state.arrPlayerOpenCatsObjects = getOpenCatObjects;
@@ -54,7 +66,7 @@ const store = new Vuex.Store({
         },
 
         addPlayer(state, name) {
-            objNewPlayer = {"name":name, "round":1, "roll":1};
+            objNewPlayer = {"name":name, "round":0, "roll":0};
             //add to players array:
             state.arrPlayers.push(objNewPlayer);
             //add to cards array:
@@ -72,6 +84,11 @@ const store = new Vuex.Store({
         //===============================
     },
     getters: {
+        //true false for game start check
+        gameStarted: state => {
+            return store.state.boolGameStarted;
+        },
+
         // open cats
         playerOpenCatObjects: state => {
             return state.arrPlayerOpenCatsObjects;
@@ -318,6 +335,9 @@ var app = new Vue({
                 } else { app.setCurrentPlayerId(tempPlayerId); }
             }
             console.log("- current player id set to " + app.getCurrentPlayerId());
+            store.commit('setPlayerRollTo0');
+            store.commit('incremetPlayerRoundBy1');
+
         },
 
         prepareAllPlayersCards: function() {
@@ -338,13 +358,26 @@ var app = new Vue({
             store.commit('addCard', newCard);
         },
 
-        continueGame: function() {
 
-            setTimeout(function() {
-                rollAllDices()
-           }, 1200);
-            
+        //return true and increment dice roll by 1 if at start, if roll not 3 yet
+        incrementRollCountIfNotAt3: function() {
+            var currentRoll = store.getters.playerDetail.roll; // w/ assumption one player in array playerDetail
+            if (currentRoll != 3) { 
+                store.getters.playerDetail.roll += 1;
+                /*alert ("roll set to ..." + store.getters.playerDetail.roll);*/
+                return true;
+            }
+            else {
+                /*alert("has alredy reached 3 rolls");*/ return false;
+            }
+        },
+
+        continueGame: function() {
+            // setTimeout(function() {
+                rollAllDices();
+        //    }, 1200);
            setTimeout(function() {
+               app.rerenderCard(store.getters.currentPlayerId);
                 app.showAndHideMessage(message3_ChooseCategory, 2000);
                    console.log(" * * * * * * *");
                    app.findMatchingCats( getDiceValues() );
@@ -354,8 +387,8 @@ var app = new Vue({
         },
 
         startGame: function() {
-            store.state.strMessage = message1_RollDices;
-            app.showAndHideMessage(store.state.strMessage, 1000);
+            store.state.boolGameStarted = true;
+            store.commit('incremetPlayerRoundBy1');            
             app.continueGame();
             // store.state.arrPlayerCards[0].general.name);            
             // app.prepareAllPlayersCards();

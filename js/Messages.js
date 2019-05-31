@@ -36,3 +36,13 @@ message4_NextPlayersTurn = `
     Nästa Spelare! Kör!
 </div>
 `
+
+message4_alreadyReached3Rolls = `
+<div id="leftBox">
+<img src="./static/rolled3Times.png" id="rolled3Times">
+</div>
+<div id="rightBox">
+    Du har kastat tärningar 3 gånger.<br>
+    Välj och fyll på en kategori i protokollet.
+</div>
+`

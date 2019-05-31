@@ -220,19 +220,9 @@ function stopstart5() {
   }
 
 
-function rollAllDices() {
-  console.log("- roll all dices..")
-  startStopRandomly1();
-  startStopRandomly2();
-  startStopRandomly3();
-  startStopRandomly4();
-  startStopRandomly5();
-}
 
 
-
-
-
+// ================= on load rolls
 window.onload = function() {
   dice1 = document.getElementById("dice1");
   startStopRandomly1();
@@ -248,11 +238,12 @@ window.onload = function() {
 
   dice5 = document.getElementById("dice5");
   startStopRandomly5();
-
   
   console.log("all five dice values: " + getDiceValues());
 
 }
+// // =================
+
 
 var arrSelectedDices = [0,0,0,0,0];
 var arrSum;
@@ -322,7 +313,6 @@ prepareToRollAgain = function (whichDice) {
       updateDiceRollMessage();
     }
 
-
   function updateDiceRollMessage() {
             //prepare the message with list of dice that should be rolled:
             messageContainer = document.getElementById("row3_clickable_RollSomeDices")    
@@ -341,49 +331,69 @@ prepareToRollAgain = function (whichDice) {
     }
 
 
-function hasClickedToStartRollingDices() {
-  console.log("arrSelectedDices" + arrSelectedDices);
+// ================= the two main functions
+function rollSelectedDices() {
+  console.log("- roll with arrSelectedDices: " + arrSelectedDices);  
   var c=0;
   for (i=0; i<5; i++) {
     c = i + 1;
     if (arrSelectedDices[i] != 0) { 
       //make dynamic variable name for as startStopRandomly function
       var dynFunName = "startStopRandomly" + c;
-      console.log ("run: " + dynFunName); 
+      console.log ("- run: " + dynFunName); 
       window[dynFunName]();
     }
   }
+}
 
-  getDiceValues();
+function rollAllDices() {
+  if (!store.getters.gameStarted) {
+    startStopRandomly1();
+    startStopRandomly2();
+    startStopRandomly3();
+    startStopRandomly4();
+    startStopRandomly5();
+  }
+  else if (app.incrementRollCountIfNotAt3() ) {
+    console.log("- roll all dices..")
+    app.showAndHideMessage(message1_RollDices, 1000);
+    startStopRandomly1();
+    startStopRandomly2();
+    startStopRandomly3();
+    startStopRandomly4();
+    startStopRandomly5();
+  }
+  else if (!app.incrementRollCountIfNotAt3()) {
+    //the returning false is assumed to be because has reached 3
+    app.showAndHideMessage(message4_alreadyReached3Rolls,
+                            2500);
+  }
 }
 
 
-document.getElementById("row3_clickable_RollSomeDices").addEventListener("click", function() {
-  hasClickedToStartRollingDices();  
-});
-
-
+// ================= dices made clickable
 document.getElementById("dice1").addEventListener("click", function() {
    prepareToRollAgain("dice1");
 });
 document.getElementById("dice2").addEventListener("click", function() {
-    prepareToRollAgain("dice2");
+  prepareToRollAgain("dice2");
 });
 document.getElementById("dice3").addEventListener("click", function() {
-    prepareToRollAgain("dice3");
+  prepareToRollAgain("dice3");
 });
 document.getElementById("dice4").addEventListener("click", function() {
-    prepareToRollAgain("dice4");
+  prepareToRollAgain("dice4");
 });
 document.getElementById("dice5").addEventListener("click", function() {
-    prepareToRollAgain("dice5");
+  prepareToRollAgain("dice5");
 });
 
-
+// ================= divs for clicking to roll all or selected dices
 document.getElementById("row2_rollAll").addEventListener("click", function() {
-  startStopRandomly1();
-  startStopRandomly2();
-  startStopRandomly3();
-  startStopRandomly4();
-  startStopRandomly5();
+  // rollAllDices();
+  app.continueGame();
+});
+
+document.getElementById("row3_clickable_RollSomeDices").addEventListener("click", function() {
+    rollSelectedDices();  
 });
