@@ -46,3 +46,12 @@ message4_alreadyReached3Rolls = `
     Välj och fyll på en kategori i protokollet.
 </div>
 `
+
+message5_pleaseStartGameFirst = `
+<div id="leftBox">
+<img src="./static/start.png">
+</div>
+<div id="rightBox">
+    Please click the start button first to start!
+</div>
+`

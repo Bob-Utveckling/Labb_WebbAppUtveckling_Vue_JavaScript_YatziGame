@@ -208,7 +208,7 @@ var app = new Vue({
             //continue game process with next step:
             app.showAndHideMessage(message4_NextPlayersTurn, 2000);
             app.setNexttPlayer();
-            app.continueGame();
+            app.continueGame("roll all dices");
         },
 
         returnHTMLForDices: function(arrDices) {
@@ -372,9 +372,17 @@ var app = new Vue({
             }
         },
 
-        continueGame: function() {
-            // setTimeout(function() {
+        continueGame: function(rollWhichDices) {
+            if (rollWhichDices == "roll all dices") {
                 rollAllDices();
+            }
+            else if (rollWhichDices == "roll some dices") {
+                rollSelectedDices(); 
+            }
+            else {
+                alert ("continue game called with false parameter");
+            }
+            // setTimeout(function() {
         //    }, 1200);
            setTimeout(function() {
                app.rerenderCard(store.getters.currentPlayerId);
@@ -389,7 +397,7 @@ var app = new Vue({
         startGame: function() {
             store.state.boolGameStarted = true;
             store.commit('incremetPlayerRoundBy1');            
-            app.continueGame();
+            app.continueGame("roll all dices");
             // store.state.arrPlayerCards[0].general.name);            
             // app.prepareAllPlayersCards();
         },

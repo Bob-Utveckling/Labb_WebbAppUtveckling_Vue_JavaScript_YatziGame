@@ -11,11 +11,11 @@ function setRandomPeriod() {
   //return all dices values
   function getDiceValues() {
         console.log("- get all dice values...")
-        if (boolDice1Ready & 
+        if (boolDice1Ready &
             boolDice2Ready &
             boolDice3Ready &
             boolDice4Ready &
-            boolDice5Ready) {              
+            boolDice5Ready) {
                 return [dice1Value, dice2Value, dice3Value, dice4Value, dice5Value];
             }
         else {
@@ -34,7 +34,7 @@ var dice1Value;
 
 function change1() {
   random1 = Math.floor(Math.random()*6);
-  dice1.innerHTML = dices[random1]; 
+  dice1.innerHTML = dices[random1];
 }
 
 function startStopRandomly1() {
@@ -55,7 +55,7 @@ function startStopRandomly1() {
 function stopstart1() {
     if(stopped1) {
       stopped1 = false;
-      t1 = setInterval(change1, 100); 
+      t1 = setInterval(change1, 100);
     } else {
       clearInterval(t1);
       stopped1 = true;
@@ -74,7 +74,7 @@ var dice2Value;
 
 function change2() {
   random2 = Math.floor(Math.random()*6);
-  dice2.innerHTML = dices[random2]; 
+  dice2.innerHTML = dices[random2];
 }
 
 function startStopRandomly2() {
@@ -94,11 +94,11 @@ function startStopRandomly2() {
 function stopstart2() {
     if(stopped2) {
       stopped2 = false;
-      t2 = setInterval(change2, 100); 
+      t2 = setInterval(change2, 100);
     } else {
       clearInterval(t2);
       stopped2 = true;
-      dice2Value = parseInt(random2) + 1;      
+      dice2Value = parseInt(random2) + 1;
     }
   }
 
@@ -113,7 +113,7 @@ var dice3Value;
 
 function change3() {
   random3 = Math.floor(Math.random()*6);
-  dice3.innerHTML = dices[random3]; 
+  dice3.innerHTML = dices[random3];
 }
 
 function startStopRandomly3() {
@@ -133,7 +133,7 @@ function startStopRandomly3() {
 function stopstart3() {
     if(stopped3) {
       stopped3 = false;
-      t3 = setInterval(change3, 100); 
+      t3 = setInterval(change3, 100);
     } else {
       clearInterval(t3);
       stopped3 = true;
@@ -153,7 +153,7 @@ var dice4Value;
 
 function change4() {
   random4 = Math.floor(Math.random()*6);
-  dice4.innerHTML = dices[random4]; 
+  dice4.innerHTML = dices[random4];
 }
 
 function startStopRandomly4() {
@@ -173,7 +173,7 @@ function startStopRandomly4() {
 function stopstart4() {
     if(stopped4) {
       stopped4 = false;
-      t4 = setInterval(change4, 100); 
+      t4 = setInterval(change4, 100);
     } else {
       clearInterval(t4);
       stopped4 = true;
@@ -191,7 +191,7 @@ var dice5Value;
 
 function change5() {
   random5 = Math.floor(Math.random()*6);
-  dice5.innerHTML = dices[random5]; 
+  dice5.innerHTML = dices[random5];
 }
 
 function startStopRandomly5() {
@@ -211,7 +211,7 @@ function startStopRandomly5() {
 function stopstart5() {
     if(stopped5) {
       stopped5 = false;
-      t5 = setInterval(change5, 100); 
+      t5 = setInterval(change5, 100);
     } else {
       clearInterval(t5);
       stopped5 = true;
@@ -238,7 +238,7 @@ window.onload = function() {
 
   dice5 = document.getElementById("dice5");
   startStopRandomly5();
-  
+
   console.log("all five dice values: " + getDiceValues());
 
 }
@@ -254,46 +254,46 @@ prepareToRollAgain = function (whichDice) {
       case "dice1":
         if (arrSelectedDices.indexOf(1) < 0) {
                 arrSelectedDices[0] = 1;
-                selectedDice.style.backgroundColor = "orange";        
+                selectedDice.style.backgroundColor = "orange";
               } else {
                 arrSelectedDices[0] = 0;
-                selectedDice.style.backgroundColor = "white";        
+                selectedDice.style.backgroundColor = "white";
               }
               break;
       case "dice2":
               if (arrSelectedDices.indexOf(2) < 0) {
                 arrSelectedDices[1] = 2;
-                selectedDice.style.backgroundColor = "orange";        
+                selectedDice.style.backgroundColor = "orange";
               } else {
                 arrSelectedDices[1] = 0;
-                selectedDice.style.backgroundColor = "white";        
+                selectedDice.style.backgroundColor = "white";
               }
               break;
         case "dice3":
               if (arrSelectedDices.indexOf(3) < 0) {
                 arrSelectedDices[2] = 3;
-                selectedDice.style.backgroundColor = "orange";        
+                selectedDice.style.backgroundColor = "orange";
               } else {
                 arrSelectedDices[2] = 0;
-                selectedDice.style.backgroundColor = "white";        
+                selectedDice.style.backgroundColor = "white";
             }
             break;
         case "dice4":
             if (arrSelectedDices.indexOf(4) < 0) {
                 arrSelectedDices[3] = 4;
-                selectedDice.style.backgroundColor = "orange";        
+                selectedDice.style.backgroundColor = "orange";
             } else {
                 arrSelectedDices[3] = 0;
-                selectedDice.style.backgroundColor = "white";        
+                selectedDice.style.backgroundColor = "white";
             }
             break;
         case "dice5":
         if (arrSelectedDices.indexOf(5) < 0) {
                 arrSelectedDices[4] = 5;
-                selectedDice.style.backgroundColor = "orange";        
+                selectedDice.style.backgroundColor = "orange";
               } else {
                 arrSelectedDices[4] = 0;
-                selectedDice.style.backgroundColor = "white";        
+                selectedDice.style.backgroundColor = "white";
               }
               break;
       }
@@ -315,14 +315,14 @@ prepareToRollAgain = function (whichDice) {
 
   function updateDiceRollMessage() {
             //prepare the message with list of dice that should be rolled:
-            messageContainer = document.getElementById("row3_clickable_RollSomeDices")    
+            messageContainer = document.getElementById("row3_clickable_RollSomeDices")
             diceList = "";
             var c;
             for (i=0; i<5; i++) {
               c = i + 1;
               diceFaceVar = 'random' + c; //name of global var corresponding to dice 1 to 5
-              thisDiceFace = window[diceFaceVar];              
-              if (arrSelectedDices[i] != 0) { 
+              thisDiceFace = window[diceFaceVar];
+              if (arrSelectedDices[i] != 0) {
                 diceList += dices[thisDiceFace] + "Tärning " + arrSelectedDices[i] + " ";
               }
             }
@@ -333,15 +333,29 @@ prepareToRollAgain = function (whichDice) {
 
 // ================= the two main functions
 function rollSelectedDices() {
-  console.log("- roll with arrSelectedDices: " + arrSelectedDices);  
-  var c=0;
-  for (i=0; i<5; i++) {
-    c = i + 1;
-    if (arrSelectedDices[i] != 0) { 
-      //make dynamic variable name for as startStopRandomly function
-      var dynFunName = "startStopRandomly" + c;
-      console.log ("- run: " + dynFunName); 
-      window[dynFunName]();
+  console.log("- roll with arrSelectedDices: " + arrSelectedDices);
+  //reset the html div text as done in function prepareToRollAgain:
+  document.getElementById("row3_rollSomeDices").style.display="inline";
+  document.getElementById("row3_clickable_RollSomeDices").style.display="none";
+
+  if (!store.getters.gameStarted) {
+    app.showAndHideMessage(message5_pleaseStartGameFirst, 2500);
+  }
+  else if (store.getters.gameStarted) {
+    if (app.incrementRollCountIfNotAt3() ) {
+      var c=0;
+      for (i=0; i<5; i++) {
+        c = i + 1;
+        if (arrSelectedDices[i] != 0) {
+          //make dynamic variable name for as startStopRandomly function
+          var dynFunName = "startStopRandomly" + c;
+          console.log ("- run: " + dynFunName);
+          window[dynFunName]();
+        }
+      }
+    } else if (!app.incrementRollCountIfNotAt3()) {
+      //the returning false is assumed to be because has reached 3
+      app.showAndHideMessage(message4_alreadyReached3Rolls, 2500);
     }
   }
 }
@@ -391,9 +405,10 @@ document.getElementById("dice5").addEventListener("click", function() {
 // ================= divs for clicking to roll all or selected dices
 document.getElementById("row2_rollAll").addEventListener("click", function() {
   // rollAllDices();
-  app.continueGame();
+  app.continueGame("roll all dices");
 });
 
 document.getElementById("row3_clickable_RollSomeDices").addEventListener("click", function() {
-    rollSelectedDices();  
+  // rollSelectedDices();
+  app.continueGame("roll some dices");
 });
