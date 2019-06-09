@@ -26,6 +26,27 @@ const store = new Vuex.Store({
     },
     mutations: {
 
+        resetGame(state) {
+            //to complete:
+            state.currentPlayerId = 0;
+            for (var gamePlayersI=0; gamePlayersI<state.arrPlayers.length; gamePlayersI++ ) {
+                //reset in arrPlayers...
+                alert("reset card for name: " + state.arrPlayers[gamePlayersI].name)
+                state.arrPlayers[gamePlayersI].round = 1;
+                state.arrPlayers[gamePlayersI].roll = 1;
+                //reset card...
+                //...reset to default card:
+                state.arrPlayerCards[gamePlayersI] =
+                    JSON.parse(JSON.stringify(defaultCardTemplate));
+                //...set name on this card:
+                state.arrPlayerCards[gamePlayersI].general.name =
+                    state.arrPlayers[gamePlayersI].name;
+                //present card:
+                app.rerenderCard;
+            }
+
+        },
+
         setPlayerRollTo0(state) {
             store.state.arrPlayers[store.getters.currentPlayerId].roll=0;
         },
@@ -49,33 +70,42 @@ const store = new Vuex.Store({
             state.arrPlayerCatNames = matchingCats;
         },
 
+        //update a card through its payload.playerId
+        // with the payload.playerCard provided
         updateCard(state, payload) {
-            // playerId, playerCard
-            //  alert("update card: " + payload.playerId +
-            //      " via mutation...");
-            //  alert("store.getters.playerCards[0].categories[13].userScore: " +
-            //      store.getters.playerCards[0].categories[13].userScore);
-            //  alert("store.getters.playerCards[1].categories[13].userScore: " +
-            //      store.getters.playerCards[1].categories[13].userScore);
-             
-             state.arrPlayerCards[payload.playerId] = payload.playerCard;            
+            console.log("updateCard mutation called");
+            state.arrPlayerCards[payload.playerId] = payload.playerCard;
         },
 
-        addCard(state, newPlaycard) {
-            state.arrPlayerCards.push(newPlaycard);
+        //do a copy of defaultCardTemplate and prepare a new player card
+        makePlayerNewCard(state, getPlayerName) {
+            var newCard = JSON.parse(JSON.stringify(defaultCardTemplate));
+            newCard.general.name = getPlayerName;
+            state.arrPlayerCards.push(newCard);
+            /*debugging:
+            for (ii = 0; ii < this.$store.state.arrPlayerCards.length; ii++) {
+                //console.log("from arrPlayers: player["+i1+"] name: " + store.state.arrPlayers[i1].name);
+                console.log("1* * * * *");
+                console.log("addCard -- from arrPlayerCards: name on card " + ii + ": (via getter): " + this.$store.getters.playerCards[ii].general.name);
+                console.log("addCard -- from arrPlayerCards: name on card " + ii + ": (via state.arrPl...) " + this.$store.state.arrPlayerCards[ii].general.name);
+            }
+            */
+
+
         },
 
+        //make a basic player object that keeps track of user name, round, roll
         addPlayer(state, name) {
+            // alert("called addPlayer mutation with name: " + name);
             objNewPlayer = {"name":name, "round":0, "roll":0};
             //add to players array:
             state.arrPlayers.push(objNewPlayer);
-            //add to cards array:
-            app.prepareOneNewPlayerCard(name);
-            //debugging:
+            /*debugging:
+            console.log("--");
             console.log("show all players:");
-            for (i = 0; i < state.arrPlayers.length; i++) {
-                 console.log("player["+i+"] name: " + store.state.arrPlayers[i].name);
-            }
+            for (var i1 = 0; i1 < state.arrPlayers.length; i1++) {
+                console.log("from arrPlayers: player["+i1+"] name: " + store.state.arrPlayers[i1].name);
+            }*/
         },
 
         setCurrentId (state, playerId) {
@@ -204,7 +234,6 @@ var app = new Vue({
                 }
             }
             app.rerenderCard(store.getters.currentPlayerId);
-
             //continue game process with next step:
             app.showAndHideMessage(message4_NextPlayersTurn, 2000);
             app.setNexttPlayer();
@@ -341,6 +370,7 @@ var app = new Vue({
         },
 
         prepareAllPlayersCards: function() {
+        alert("note! prepareAllPlayerCards should assign obj to target from source and not do copy by reference...")
             var newCard = defaultCardTemplate;
             for (i = 0; i < store.getters.listOfPlayers.length; i++) {
                 newCard.general.name = store.getters.listOfPlayers[i].name;
@@ -353,9 +383,20 @@ var app = new Vue({
         },
 
         prepareOneNewPlayerCard: function(getPlayerName) {
+            alert("possible error 2: called prepareOneNewPlayerCard");
             var newCard = defaultCardTemplate;
             newCard.general.name = getPlayerName;
-            store.commit('addCard', newCard);
+            console.log("prepareOneNewPlayerCard function has a newCard with name on it: " + newCard.general.name);
+            //store.commit('addCard', newCard);
+            this.$store.state.arrPlayerCards.push(newCard);
+            for (ii = 0; ii < this.$store.state.arrPlayerCards.length; ii++) {
+                //console.log("from arrPlayers: player["+i1+"] name: " + store.state.arrPlayers[i1].name);
+                console.log("1* * * * *");
+                console.log("addCard -- from arrPlayerCards: name on card " + ii + ": (via getter): " + this.$store.getters.playerCards[ii].general.name);
+                console.log("addCard -- from arrPlayerCards: name on card " + ii + ": (via state.arrPl...) " + this.$store.state.arrPlayerCards[ii].general.name);
+            }
+
+
         },
 
 
@@ -395,18 +436,30 @@ var app = new Vue({
         },
 
         startGame: function() {
+            if (store.state.boolGameStarted ) {
+                alert("game was already started")
+                //reset player turn/round/roll if game was started on click
+                store.commit('resetGame')
+            }
+
             store.state.boolGameStarted = true;
-            store.commit('incremetPlayerRoundBy1');            
+
+            store.commit('incremetPlayerRoundBy1');
             app.continueGame("roll all dices");
             // store.state.arrPlayerCards[0].general.name);            
             // app.prepareAllPlayersCards();
         },
 
-        addNewPlayer: function(newPlayerName) {     
-            store.commit('addPlayer',newPlayerName);
+        //at user adding name... prepare player object, player card object
+        addNewPlayer: function(newPlayerName) {
+            // alert("addNewPlayer...")
+            store.commit('addPlayer', newPlayerName);
+            // alert("saved to arrPlayers[0].name: " + this.$store.state.arrPlayers[0].name);
+            store.commit('makePlayerNewCard', newPlayerName);
+            //show what arrPlayerCards has as its cards...
+            // alert("done addPlayer, makePlayerNewCard...now cardComp-putAllCards()...")
             app.$refs.cardComponent123.putAllCards();
         },
-
 
 
         //======================

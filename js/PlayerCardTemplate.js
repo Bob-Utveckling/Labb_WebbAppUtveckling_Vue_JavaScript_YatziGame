@@ -1,4 +1,4 @@
-var defaultCardTemplate =
+const defaultCardTemplate =
 	{
 		"general": {
 			"name": "PlayerName"

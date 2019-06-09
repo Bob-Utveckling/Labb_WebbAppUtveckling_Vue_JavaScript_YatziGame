@@ -22,20 +22,27 @@ Vue.component('start-game-component', {
 
 
 Vue.component('add-new-player-component', {
-    props: [ 'name'],
+    //props: [ 'name'],
+    data() {
+      return {
+          name
+      }
+    },
     methods: {
-        //function here not called. v-on:click emits instead
-        showPlayerName: function() {
+        //function called. not using v-on:click emits
+        AddPlayerWithName: function() {
             //alert(this.name);
-            app.runThisFunction();
+            //app.runThisFunction();
+            app.addNewPlayer(this.name);
         }
     },
     template: `
+        <!--v-on:click="$emit('enter-name', name)"-->
         <div class="newplayercomponent">
             Namn: {{ name }} <br>
             <input v-model="name">
-            <button class="button1"
-                v-on:click="$emit('enter-name', name)"
+            <button class="button1" 
+                @click="AddPlayerWithName()"
             >
                 Add Player
             </button>
@@ -76,6 +83,7 @@ Vue.component('players-cards-component', {
         },
 
         prepareHowManyCards: function(howManyCards) {
+            alert("possibly not needed... prepareHowManyCards");
             PlCrComp_arrPlayerCards = [];
             for (cardCountI=0; cardCountI < howManyCards; cardCountI++) {
                 PlCrComp_arrPlayerCards[cardCountI] = defaultCardTemplate;
@@ -91,10 +99,10 @@ Vue.component('players-cards-component', {
             return tempHTML;
         },
 
-        prepareTheFieldsForThisCard: function(cardi, thisPlayerName) {
-                console.log("-- card " + cardi);
-                // alert("-- card " + cardi);
-                cardId = "card" + cardi;
+        prepareTheFieldsForThisCard: function(getcardi, thisPlayerName) {
+                console.log("-- prepareTheFieldsForThisCard card " + getcardi +
+                    "\n" + "name: " + thisPlayerName);
+                cardId = "card" + getcardi;
                 prepCard = document.getElementById(cardId);
                 
 
@@ -109,9 +117,10 @@ Vue.component('players-cards-component', {
                 thisDiv.style.height = "35px";
                 thisDiv.innerHTML = thisPlayerName;
                 prepCard.appendChild(thisDiv);
-                
+
                 for ( fieldi = 0; fieldi < arrRuleNameRegistry.length; fieldi ++) {
-                    var catName = PlCrComp_arrPlayerCards[cardi].categories[fieldi].catName;
+                    // var catName = PlCrComp_arrPlayerCards[getcardi].categories[fieldi].catName;
+                    var catName = this.$store.state.arrPlayerCards[getcardi].categories[fieldi].catName;
                     console.log("do field of rule: " + fieldi);
                     thisDiv.style.fontFamily = "Arial, Helvetica, sans-serif";
                     
@@ -144,7 +153,7 @@ Vue.component('players-cards-component', {
                     thisDiv.style.backgroundColor = "beige";
                     thisDiv.style.border = "1px solid brown";  
                     thisDiv.style.height = "35px";  
-                    thisDiv.innerHTML = this.returnFinalCatHTML(cardi, fieldi);
+                    thisDiv.innerHTML = this.returnFinalCatHTML(getcardi, fieldi);
                     // "id: " + thisDiv.id + "... " + "catName: " + catName + "... etc";
                     prepCard.appendChild(thisDiv);
                 }
@@ -159,23 +168,18 @@ Vue.component('players-cards-component', {
         },
 
         putAllCards: function() {
-            console.log("-bug fix to have different names -- at start of putAllCards player 1's names: "
-                 + store.getters.playerCards[0].general.name + ", "
-                //    store.getters.playerCards[1].general.name + ", "
-                 );
+            // alert("putAllCards");
             howManyPlayers = this.$store.getters.numberOfPlayers;
             if (howManyPlayers == 0) { howManyPlayers = 1; }
             console.log("-howManyPlayers: " + howManyPlayers);
     
-            this.prepareHowManyCards(howManyPlayers);
+            // this.prepareHowManyCards(howManyPlayers);
             this.setPlaceHolderForAllCards(howManyPlayers);
             
             for ( cardi = 0; cardi < howManyPlayers; cardi ++) {
-                sendThisName = store.getters.listOfPlayers[cardi].name;
-                // playerCards[cardi].general.name;
-
-                this.prepareTheFieldsForThisCard(cardi, sendThisName);
+                var sendThisName = this.$store.state.arrPlayerCards[cardi].general.name;
                 // alert("sendThisName:" + sendThisName);
+                this.prepareTheFieldsForThisCard(cardi, sendThisName);
             }
             console.log("-- place cards...");    
         }
