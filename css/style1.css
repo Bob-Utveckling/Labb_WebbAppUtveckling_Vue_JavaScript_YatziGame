@@ -20,6 +20,12 @@
         /* background-color: rgb(228, 203, 140); */
     }
 
+#row1_5_rollAllOrLooseDices {
+    font-size: 20px;
+    background-color: rgb(85, 212, 85);
+    cursor: pointer;
+}
+
 #row2_rollAll {
     font-size: 30px;
     background-color: rgb(85, 212, 85);
