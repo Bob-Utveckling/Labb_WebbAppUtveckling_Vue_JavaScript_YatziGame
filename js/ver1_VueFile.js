@@ -235,9 +235,9 @@ var app = new Vue({
             }
             app.rerenderCard(store.getters.currentPlayerId);
             //continue game process with next step:
-            app.showAndHideMessage(message4_NextPlayersTurn, 2000);
+            app.showAndHideMessage(message4_NextPlayersTurn, 1500);
             app.setNexttPlayer();
-            app.continueGame("roll all dices");
+            app.continueGame("roll free dices");
         },
 
         returnHTMLForDices: function(arrDices) {
@@ -414,25 +414,33 @@ var app = new Vue({
         },
 
         continueGame: function(rollWhichDices) {
-            if (rollWhichDices == "roll all dices") {
-                rollAllDices();
+            if (store.state.boolGameStarted) {
+                if (rollWhichDices == "roll free dices") {
+                    rollFreeDices();
+
+                    //    }, 1200);
+                    setTimeout(function() {
+                        app.rerenderCard(store.getters.currentPlayerId);
+                        app.showAndHideMessage(message3_ChooseCategory, 2000);
+                        console.log(" * * * * * * *");
+                        app.findMatchingCats( getDiceValues() );
+                        app.findOpenCats();
+                        app.highlightOpenCats();
+                        freeAllDices();
+                    }, 4000);
+
+                    // setTimeout(function() {
+
+
+                }
+                else {
+                    console.log ("continue game called with false parameter");
+                    alert ("continue game called with false parameter");
+                }
+            } else {
+                app.showAndHideMessage(message5_pleaseStartGameFirst, 2500);
+
             }
-            else if (rollWhichDices == "roll some dices") {
-                rollSelectedDices(); 
-            }
-            else {
-                alert ("continue game called with false parameter");
-            }
-            // setTimeout(function() {
-        //    }, 1200);
-           setTimeout(function() {
-               app.rerenderCard(store.getters.currentPlayerId);
-                app.showAndHideMessage(message3_ChooseCategory, 2000);
-                   console.log(" * * * * * * *");
-                   app.findMatchingCats( getDiceValues() );
-                   app.findOpenCats();
-                   app.highlightOpenCats();
-            }, 4000);
         },
 
         startGame: function() {
@@ -443,9 +451,10 @@ var app = new Vue({
             }
 
             store.state.boolGameStarted = true;
-
+            app.showAndHideMessage(message6_start, 2500);
+            freeAllDices();
             store.commit('incremetPlayerRoundBy1');
-            app.continueGame("roll all dices");
+            app.continueGame("roll free dices");
             // store.state.arrPlayerCards[0].general.name);            
             // app.prepareAllPlayersCards();
         },

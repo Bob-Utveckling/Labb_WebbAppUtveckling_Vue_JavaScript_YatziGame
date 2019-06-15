@@ -245,170 +245,141 @@ window.onload = function() {
 // // =================
 
 
-var arrSelectedDices = [0,0,0,0,0];
-var arrSum;
-prepareToRollAgain = function (whichDice) {
-  console.log("prepare rolling: " + whichDice);
-  selectedDice = document.getElementById(whichDice);
-    switch (whichDice) {
-      case "dice1":
-        if (arrSelectedDices.indexOf(1) < 0) {
-                arrSelectedDices[0] = 1;
-                selectedDice.style.backgroundColor = "orange";
-              } else {
-                arrSelectedDices[0] = 0;
-                selectedDice.style.backgroundColor = "white";
-              }
-              break;
-      case "dice2":
-              if (arrSelectedDices.indexOf(2) < 0) {
-                arrSelectedDices[1] = 2;
-                selectedDice.style.backgroundColor = "orange";
-              } else {
-                arrSelectedDices[1] = 0;
-                selectedDice.style.backgroundColor = "white";
-              }
-              break;
+
+var arrLockedDices = [false, false, false, false, false];
+function lockDice(givenDice) {
+    console.log("- lock/unlock given dice: " + givenDice);
+    thisDice = document.getElementById(givenDice);
+    switch (givenDice) {
+        case "dice1":
+            arrLockedDices[0] = !arrLockedDices[0];
+            arrLockedDices[0] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            break;
+        case "dice2":
+            arrLockedDices[1] = !arrLockedDices[1];
+            arrLockedDices[1] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            break;
         case "dice3":
-              if (arrSelectedDices.indexOf(3) < 0) {
-                arrSelectedDices[2] = 3;
-                selectedDice.style.backgroundColor = "orange";
-              } else {
-                arrSelectedDices[2] = 0;
-                selectedDice.style.backgroundColor = "white";
-            }
+            arrLockedDices[2] = !arrLockedDices[2];
+            arrLockedDices[2] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
             break;
         case "dice4":
-            if (arrSelectedDices.indexOf(4) < 0) {
-                arrSelectedDices[3] = 4;
-                selectedDice.style.backgroundColor = "orange";
-            } else {
-                arrSelectedDices[3] = 0;
-                selectedDice.style.backgroundColor = "white";
-            }
+            arrLockedDices[3] = !arrLockedDices[3];
+            arrLockedDices[3] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
             break;
         case "dice5":
-        if (arrSelectedDices.indexOf(5) < 0) {
-                arrSelectedDices[4] = 5;
-                selectedDice.style.backgroundColor = "orange";
-              } else {
-                arrSelectedDices[4] = 0;
-                selectedDice.style.backgroundColor = "white";
-              }
-              break;
-      }
-      //switch message container if dices selected or all desselected
-      //do based on values in arrSelectedDices
-      arrSumCountDices = arr => arr.reduce((a,b) => a + b, 0);
-      console.log("arrSum(arrSelectedDices): " + arrSumCountDices(arrSelectedDices) );
-      if ( arrSumCountDices(arrSelectedDices) == 0 ) {
-        //dice array shows all as unselected
-        document.getElementById("row3_rollSomeDices").style.display="inline";
-        document.getElementById("row3_clickable_RollSomeDices").style.display="none";
-      } else {
-        document.getElementById("row3_rollSomeDices").style.display="none";
-        document.getElementById("row3_clickable_RollSomeDices").style.display="inline";
-      }
-
-      updateDiceRollMessage();
+            arrLockedDices[4] = !arrLockedDices[4];
+            arrLockedDices[4] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            break;
     }
+    console.log("arrLockedDices: " + arrLockedDices);
+}
 
-  function updateDiceRollMessage() {
-            //prepare the message with list of dice that should be rolled:
-            messageContainer = document.getElementById("row3_clickable_RollSomeDices")
-            diceList = "";
+function freeAllDices() {
+    //free dices: set to true. then toggle in lockDice()
+    arrLockedDices = [true, true, true, true, true];
+    lockDice("dice1");
+    lockDice("dice2");
+    lockDice("dice3");
+    lockDice("dice4");
+    lockDice("dice5");
+    updateDiceRollMessage("Kasta om alla tärningar: Klicka här");
+}
+
+function updateDiceRollMessage(dicesMessage) {
+      //prepare the message with list of locked dices, free dices to be rolled:
+            messageContainer = document.getElementById("row1_5_rollAllOrLooseDices");
+            diceList = ""; //
+            strLockedDices = "";
+            strFreeDices = ""
             var c;
             for (i=0; i<5; i++) {
               c = i + 1;
               diceFaceVar = 'random' + c; //name of global var corresponding to dice 1 to 5
               thisDiceFace = window[diceFaceVar];
-              if (arrSelectedDices[i] != 0) {
-                diceList += dices[thisDiceFace] + "Tärning " + arrSelectedDices[i] + " ";
+              if (arrLockedDices[i] == true) {
+                  strLockedDices += dices[thisDiceFace] + "Tärning " + c + " ";
+              } else if (arrLockedDices[i] == false) {
+                  strFreeDices += dices[thisDiceFace] + "Tärning " +c + " ";
               }
             }
-            console.log("arrSelectedDices: " + arrSelectedDices);
-            messageContainer.innerHTML = "Klicka för att kasta om " + diceList;
+
+            console.log("lockedDice message: " + strLockedDices);
+            console.log("freeDice message: " + strFreeDices);
+
+            if (strLockedDices != "") { strLockedDices="Lås "+strLockedDices + ", "; }
+            if (strFreeDices != "") { strFreeDices="Kasta om "+strFreeDices; }
+
+            // strDiceRollMessage = "Klicka för att kasta om alla tärningar";
+            strDiceRollMessage = strLockedDices + strFreeDices;
+            if (dicesMessage==undefined) {
+                messageContainer.innerHTML = strDiceRollMessage;
+            }
+            else {
+                messageContainer.innerHTML = dicesMessage;
+            }
     }
 
 
-// ================= the two main functions
-function rollSelectedDices() {
-  console.log("- roll with arrSelectedDices: " + arrSelectedDices);
-  //reset the html div text as done in function prepareToRollAgain:
-  document.getElementById("row3_rollSomeDices").style.display="inline";
-  document.getElementById("row3_clickable_RollSomeDices").style.display="none";
 
-  if (!store.getters.gameStarted) {
-    app.showAndHideMessage(message5_pleaseStartGameFirst, 2500);
-  }
-  else if (store.getters.gameStarted) {
-    if (app.incrementRollCountIfNotAt3() ) {
-      var c=0;
-      for (i=0; i<5; i++) {
-        c = i + 1;
-        if (arrSelectedDices[i] != 0) {
-          //make dynamic variable name for as startStopRandomly function
-          var dynFunName = "startStopRandomly" + c;
-          console.log ("- run: " + dynFunName);
-          window[dynFunName]();
+// =================  main function
+function rollFreeDices() {
+    if (!store.getters.gameStarted) {
+        app.showAndHideMessage(message5_pleaseStartGameFirst, 2500);
+    }
+    else if (store.getters.gameStarted) {
+        if (app.incrementRollCountIfNotAt3() ) {
+            console.log("- roll the free dices")
+            var c = 0;
+            for (diceRollI=0; diceRollI<5; diceRollI++) {
+                c = diceRollI + 1;
+                if (arrLockedDices[diceRollI] == false) {
+                    //can roll dice. not checked to dice lock true
+                    var dynFunName = "startStopRandomly" + c;
+                    console.log ("- run: " + dynFunName);
+                    window[dynFunName]();
+                }
+            }
+        } else if (!app.incrementRollCountIfNotAt3()) {
+            //the returning false is assumed to be because has reached 3
+            app.showAndHideMessage(message4_alreadyReached3Rolls, 2500);
         }
-      }
-    } else if (!app.incrementRollCountIfNotAt3()) {
-      //the returning false is assumed to be because has reached 3
-      app.showAndHideMessage(message4_alreadyReached3Rolls, 2500);
     }
-  }
 }
 
-function rollAllDices() {
-  if (!store.getters.gameStarted) {
-    startStopRandomly1();
-    startStopRandomly2();
-    startStopRandomly3();
-    startStopRandomly4();
-    startStopRandomly5();
-  }
-  else if (app.incrementRollCountIfNotAt3() ) {
-    console.log("- roll all dices..")
-    app.showAndHideMessage(message1_RollDices, 1000);
-    startStopRandomly1();
-    startStopRandomly2();
-    startStopRandomly3();
-    startStopRandomly4();
-    startStopRandomly5();
-  }
-  else if (!app.incrementRollCountIfNotAt3()) {
-    //the returning false is assumed to be because has reached 3
-    app.showAndHideMessage(message4_alreadyReached3Rolls,
-                            2500);
-  }
-}
 
 
 // ================= dices made clickable
 document.getElementById("dice1").addEventListener("click", function() {
-   prepareToRollAgain("dice1");
+   //prepareToRollAgain("dice1");
+   lockDice("dice1");
+   updateDiceRollMessage();
 });
 document.getElementById("dice2").addEventListener("click", function() {
-  prepareToRollAgain("dice2");
+  //prepareToRollAgain("dice2");
+  lockDice("dice2");
+  updateDiceRollMessage();
 });
+
 document.getElementById("dice3").addEventListener("click", function() {
-  prepareToRollAgain("dice3");
+  //prepareToRollAgain("dice3");
+  lockDice("dice3");
+  updateDiceRollMessage();
 });
 document.getElementById("dice4").addEventListener("click", function() {
-  prepareToRollAgain("dice4");
+  //prepareToRollAgain("dice4");
+  lockDice("dice4");
+  updateDiceRollMessage();
 });
 document.getElementById("dice5").addEventListener("click", function() {
-  prepareToRollAgain("dice5");
+  //prepareToRollAgain("dice5");
+  lockDice("dice5");
+  updateDiceRollMessage();
 });
 
 // ================= divs for clicking to roll all or selected dices
-document.getElementById("row2_rollAll").addEventListener("click", function() {
-  // rollAllDices();
-  app.continueGame("roll all dices");
-});
-
-document.getElementById("row3_clickable_RollSomeDices").addEventListener("click", function() {
-  // rollSelectedDices();
-  app.continueGame("roll some dices");
+document.getElementById("row1_5_rollAllOrLooseDices").addEventListener("click", function() {
+  //   alert("roll all or open dices");
+  //   rollFreeDices();
+  app.continueGame("roll free dices");
 });

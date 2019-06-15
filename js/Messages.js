@@ -52,6 +52,15 @@ message5_pleaseStartGameFirst = `
 <img src="./static/start.png">
 </div>
 <div id="rightBox">
-    Please click the start button first to start!
+    Please click the start button to start!
+</div>
+`
+
+message6_start = `
+<div id='leftBox'>
+    <img src="./static/start.png" id="rollDices">
+</div>
+<div id='rightBox'>
+    Nu startar vi!
 </div>
 `
