@@ -25,6 +25,8 @@
   border: 1px solid #888;
   width: 80%;
   height: 30%;
+  overflow: auto; /* Enable scroll if needed */
+
 }
 
 /* The Close Button */
