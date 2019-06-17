@@ -5,11 +5,33 @@ Vue.component('start-game-component', {
         }
     },
     template: `
-        <div class="newplayercomponent">
+        <div class="startcomponent">
             <button class="button1"
                 v-on:click="startGame"
             >
-                Börja spela
+                Start Game!
+            </button>
+        </div>
+    `
+})
+
+
+
+//=======================================================
+
+
+Vue.component('end-game-component', {
+    methods: {
+        endGame: function() {
+            app.endGame();
+        }
+    },
+    template: `
+        <div class="endcomponent">
+            <button class="button2"
+                v-on:click="endGame"
+            >
+                See Results
             </button>
         </div>
     `
@@ -39,13 +61,13 @@ Vue.component('add-new-player-component', {
     template: `
         <!--v-on:click="$emit('enter-name', name)"-->
         <div class="newplayercomponent">
-            Namn: {{ name }} <br>
             <input v-model="name">
-            <button class="button1" 
-                @click="AddPlayerWithName()"
-            >
+            <button class="button1" @click="AddPlayerWithName()"> 
                 Add Player
-            </button>
+                </button>
+
+                <div>Namn: {{ name }}</div>
+            
         </div>
     `
 })
@@ -115,7 +137,8 @@ Vue.component('players-cards-component', {
                 thisDiv.style.fontFamily = "Arial, Helvetica, sans-serif";
                 thisDiv.style.padding = "5px";
                 thisDiv.style.height = "35px";
-                thisDiv.innerHTML = thisPlayerName;
+                thisDiv.innerHTML = "<img src='./static/happyIcon1.png' width=30>" +
+                    thisPlayerName;
                 prepCard.appendChild(thisDiv);
 
                 for ( fieldi = 0; fieldi < arrRuleNameRegistry.length; fieldi ++) {
@@ -133,7 +156,7 @@ Vue.component('players-cards-component', {
                         thisDiv.style.height = "35px";
                         
                         thisDiv.id  = cardId + "_" + "summa"; //card0_summa                        
-                        thisDiv.innerHTML = " - ";
+                        thisDiv.innerHTML = store.getters.playerCards[store.getters.currentPlayerId].sumAndTotal.sum.userScore;
                         prepCard.appendChild(thisDiv);
 
                         //add bonus field
@@ -144,7 +167,7 @@ Vue.component('players-cards-component', {
                         thisDiv.style.height = "35px";
                         
                         thisDiv.id  = cardId + "_" + "bonus"; //card0_bonus                        
-                        thisDiv.innerHTML = " - ";
+                        thisDiv.innerHTML = store.getters.playerCards[store.getters.currentPlayerId].sumAndTotal.bonus.userScore;
                         prepCard.appendChild(thisDiv);
                     }
 
@@ -162,7 +185,7 @@ Vue.component('players-cards-component', {
                 thisDiv.style.backgroundColor = "rgb(200, 235, 168)";
                 thisDiv.style.border = "1px solid rgb(250, 110, 110)";  
                 thisDiv.style.height = "35px";  
-                thisDiv.innerHTML = "id: " + thisDiv.id + "... etc";
+                thisDiv.innerHTML = store.getters.playerCards[store.getters.currentPlayerId].sumAndTotal.total.userScore;
                 prepCard.appendChild(thisDiv);
 
         },
@@ -405,10 +428,16 @@ Vue.component('some-game-info-component', {
                 thisNote  = "No player added."
             }
             else {
-                thisNote =  "Player " +
-                    (this.$store.getters.currentPlayerId + 1) +
-                    ", " + this.$store.getters.playerDetail.name +
-                    " -- Kör!";
+                if (this.$store.getters.playerDetail.name == "") {
+                    thisNote =  "Player " +
+                        (this.$store.getters.currentPlayerId + 1) +
+                        " -- Kör!";
+                } else {
+                    thisNote =  "Player " +
+                        (this.$store.getters.currentPlayerId + 1) +
+                        ", " + this.$store.getters.playerDetail.name +
+                        " -- Kör!";
+                }
             }
             return thisNote;
         },

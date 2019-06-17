@@ -253,23 +253,23 @@ function lockDice(givenDice) {
     switch (givenDice) {
         case "dice1":
             arrLockedDices[0] = !arrLockedDices[0];
-            arrLockedDices[0] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            arrLockedDices[0] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="";
             break;
         case "dice2":
             arrLockedDices[1] = !arrLockedDices[1];
-            arrLockedDices[1] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            arrLockedDices[1] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="";
             break;
         case "dice3":
             arrLockedDices[2] = !arrLockedDices[2];
-            arrLockedDices[2] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            arrLockedDices[2] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="";
             break;
         case "dice4":
             arrLockedDices[3] = !arrLockedDices[3];
-            arrLockedDices[3] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            arrLockedDices[3] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="";
             break;
         case "dice5":
             arrLockedDices[4] = !arrLockedDices[4];
-            arrLockedDices[4] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="url('./static/free.jpg')";
+            arrLockedDices[4] == true ? thisDice.style.backgroundImage = "url('./static/lock.jpg')" : thisDice.style.backgroundImage="";
             break;
     }
     console.log("arrLockedDices: " + arrLockedDices);
@@ -307,11 +307,11 @@ function updateDiceRollMessage(dicesMessage) {
             console.log("lockedDice message: " + strLockedDices);
             console.log("freeDice message: " + strFreeDices);
 
-            if (strLockedDices != "") { strLockedDices="Lås "+strLockedDices + ", "; }
+            if (strLockedDices != "") { strLockedDices="Lås "+strLockedDices; }
             if (strFreeDices != "") { strFreeDices="Kasta om "+strFreeDices; }
 
             // strDiceRollMessage = "Klicka för att kasta om alla tärningar";
-            strDiceRollMessage = strLockedDices + strFreeDices;
+            strDiceRollMessage = strLockedDices + "<hr>" + strFreeDices;
             if (dicesMessage==undefined) {
                 messageContainer.innerHTML = strDiceRollMessage;
             }

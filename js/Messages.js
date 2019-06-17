@@ -64,3 +64,38 @@ message6_start = `
     Nu startar vi!
 </div>
 `
+
+message7_end = `
+<div id='leftBox'>
+    <img src="./static/end.png" id="rollDices">
+</div>
+
+`
+
+message8_addPlayer = `
+<div id='leftBox'>
+    <img src="./static/smileIcon.jpg" id="rollDices">
+</div>
+<div id='rightBox'>
+    Add players to start!
+</div>
+`
+
+message9_noOpenCategoriesAvailable = `
+<div id='leftBox'>
+    <img src="./static/check.png" id="rollDices">
+    </div>
+    <div id='rightBox'>
+    All categories are checked.<br>
+    You can:<br>
+    Roll again (if not rolled 3 times) | See game results
+</div>
+    `
+
+message10_restart = `
+<div id='leftBox'>
+    <img src="./static/start.png" id="rollDices">
+    </div>
+    <div id='rightBox'>  Restarting </div>
+</div>
+`

@@ -21,8 +21,8 @@ const store = new Vuex.Store({
 
 
         arrDicesToRoll : [], // eg. [1,4,5] i.e. dice1, dice4,dice5 from the 5 dices
-        arr5dicesValues: [],  // eg. [1,4,6,2,1]        
-        arrPossibleCategories :[] //eg. if dices1,1,1,1,4 then ["ettor", "två par"]    
+        arr5dicesValues: [],  // eg. [1,4,6,2,1]
+        arrPossibleCategories :[] //eg. if dices1,1,1,1,4 then ["ettor", "två par"]
     },
     mutations: {
 
@@ -31,9 +31,9 @@ const store = new Vuex.Store({
             state.currentPlayerId = 0;
             for (var gamePlayersI=0; gamePlayersI<state.arrPlayers.length; gamePlayersI++ ) {
                 //reset in arrPlayers...
-                alert("reset card for name: " + state.arrPlayers[gamePlayersI].name)
-                state.arrPlayers[gamePlayersI].round = 1;
-                state.arrPlayers[gamePlayersI].roll = 1;
+                // alert("reset card for name: " + state.arrPlayers[gamePlayersI].name)
+                state.arrPlayers[gamePlayersI].round = 0;
+                state.arrPlayers[gamePlayersI].roll = 0;
                 //reset card...
                 //...reset to default card:
                 state.arrPlayerCards[gamePlayersI] =
@@ -139,7 +139,7 @@ const store = new Vuex.Store({
         },
         playerName: state => {
                 // return state.arrPlayers[state.currentPlayerId].name;
-                return "name123";            
+                return "name123";
             },
         playerDetail : state => {
             return state.arrPlayers[state.currentPlayerId];
@@ -173,8 +173,25 @@ var app = new Vue({
             return ("2 + 2 = " + ( 2 + 2) );
         }
     },
-    
+
     methods: {
+
+        endGame: function() {
+            resultMessage = message7_end;
+            results = "";
+            for (resultCountI=0; resultCountI<store.getters.numberOfPlayers; resultCountI++) {
+                results += "Player " + String(resultCountI + 1) + ": " +
+                    store.getters.listOfPlayers[resultCountI].name +
+                    " -- " +
+                    store.getters.playerCards[resultCountI].sumAndTotal.total.userScore +
+                    "<br>";
+            }
+            resultMessage += ' \
+               <div id="rightBox">Yatzi champions<p>' +
+               results +
+               "</div>";
+            this.showOrHideModalBox("show", resultMessage);
+        },
 
         //show and hide
         showAndHideMessage: function (getMessage, getTimer) {
@@ -182,7 +199,7 @@ var app = new Vue({
             this.showOrHideModalBox("show", getMessage);
             setTimeout(function() {
                 app.showOrHideModalBox("hide", "");
-           }, getTimer);            
+           }, getTimer);
         },
 
         //show or hide depending on the parameter
@@ -201,8 +218,44 @@ var app = new Vue({
             //  alert("rerender " + cardWithId);
             //first clear innerHTML...
             document.getElementById(cardWithId).innerHTML = "";
-            app.$refs.cardComponent123.prepareTheFieldsForThisCard(playerId, 
+            app.$refs.cardComponent123.prepareTheFieldsForThisCard(playerId,
                                             store.getters.listOfPlayers[playerId].name);
+        },
+
+        countCardSum: function(getCurrentCard) {
+            return (
+              getCurrentCard.categories[0].userScore +
+              getCurrentCard.categories[1].userScore +
+              getCurrentCard.categories[2].userScore +
+              getCurrentCard.categories[3].userScore +
+              getCurrentCard.categories[4].userScore +
+              getCurrentCard.categories[5].userScore
+            );
+        },
+
+        countCardBonus: function(getCurrentCard) {
+           return (getCurrentCard.sumAndTotal.sum.userScore >= 63 ? 50 : 0);
+        },
+
+        countTotal: function(getCurrentCard) {
+            return (
+                getCurrentCard.categories[0].userScore +
+                getCurrentCard.categories[1].userScore +
+                getCurrentCard.categories[2].userScore +
+                getCurrentCard.categories[3].userScore +
+                getCurrentCard.categories[4].userScore +
+                getCurrentCard.categories[5].userScore +
+                getCurrentCard.sumAndTotal.bonus.userScore +
+                getCurrentCard.categories[6].userScore +
+                getCurrentCard.categories[7].userScore +
+                getCurrentCard.categories[8].userScore +
+                getCurrentCard.categories[9].userScore +
+                getCurrentCard.categories[10].userScore +
+                getCurrentCard.categories[11].userScore +
+                getCurrentCard.categories[12].userScore +
+                getCurrentCard.categories[13].userScore +
+                getCurrentCard.categories[14].userScore
+                );
         },
 
         registerThisOpenCatToCard: function(getCatObj) {
@@ -224,6 +277,9 @@ var app = new Vue({
                     currentCard.categories[countCatI].userDices = toRegisterDices;
                     currentCard.categories[countCatI].userScore = toRegisterScore;
                     currentCard.categories[countCatI].filled = true;
+                    currentCard.sumAndTotal.sum.userScore = app.countCardSum(currentCard);
+                    currentCard.sumAndTotal.bonus.userScore = app.countCardBonus(currentCard);
+                    currentCard.sumAndTotal.total.userScore = app.countTotal(currentCard);
                     // alert("has updated card. now mutate in arr. then rerender card");
                     // alert ("registerThisOpenCatToCard...");
                     store.commit({
@@ -257,23 +313,15 @@ var app = new Vue({
             var thisCatDices = catObj.userDices
             //do dice image tag for each dice
             thisCatDicesHTML = this.returnHTMLForDices(thisCatDices);
-
             //add content to div:
-            document.getElementById(divId).innerHTML = 
+            document.getElementById(divId).innerHTML =
                 "dices: " + thisCatDicesHTML +
-                " score: " + catObj.userScore
-                ;
+                " score: " + catObj.userScore;
             //do some css update to div:
             document.getElementById(divId).style.cursor = "pointer";
             //add clickable and add function to register the cat on click
             document.getElementById(divId).addEventListener("click", function() {
                 app.registerThisOpenCatToCard(catObj);
-
-                // alert("after register cat called...store.getters.playerCards[0].categories[13].userScore: " +
-                // store.getters.playerCards[0].categories[13].userScore);
-                // alert("after register cat called...store.getters.playerCards[1].categories[13].userScore: " +
-                // store.getters.playerCards[1].categories[13].userScore);
-   
             })
         },
 
@@ -321,9 +369,14 @@ var app = new Vue({
                 }
             }
             console.log("- arrOpenCatsObjs: " + arrOpenCatsObjs);
+
             store.commit('keepArrOfOpenCatsObjects', arrOpenCatsObjs);
             console.log("- return open cat objs: " + store.getters.playerOpenCatObjects);
-            return (store.getters.playerOpenCatObjects);
+            if (arrOpenCatsObjs.length==0) {
+                this.showOrHideModalBox("show",message9_noOpenCategoriesAvailable);
+            } else {
+                return (store.getters.playerOpenCatObjects);
+            }
         },
 
         findMatchingCats: function(arrUserDices) {
@@ -445,18 +498,23 @@ var app = new Vue({
 
         startGame: function() {
             if (store.state.boolGameStarted ) {
-                alert("game was already started")
+                 //alert("game was already started")
                 //reset player turn/round/roll if game was started on click
                 store.commit('resetGame')
-            }
 
-            store.state.boolGameStarted = true;
-            app.showAndHideMessage(message6_start, 2500);
-            freeAllDices();
-            store.commit('incremetPlayerRoundBy1');
-            app.continueGame("roll free dices");
-            // store.state.arrPlayerCards[0].general.name);            
-            // app.prepareAllPlayersCards();
+            }
+            if (store.getters.numberOfPlayers==0) {
+                app.showAndHideMessage(message8_addPlayer, 2500);
+
+            } else {
+                store.state.boolGameStarted = true;
+                app.showAndHideMessage(message6_start, 2500);
+                freeAllDices();
+                store.commit('incremetPlayerRoundBy1');
+                app.continueGame("roll free dices");
+                // store.state.arrPlayerCards[0].general.name);
+                // app.prepareAllPlayersCards();
+            }
         },
 
         //at user adding name... prepare player object, player card object

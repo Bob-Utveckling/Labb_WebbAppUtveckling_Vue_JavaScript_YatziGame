@@ -146,13 +146,24 @@ file1_findMatchingCats = function(arrUserDices) {
 				//two pairs for ettpar category
 				console.log("two possible pairs for 'ettpar' category -- dices: " + arrDicesWithPair);
 				arrObjReturn = [];
-				for (i1 = 0; i1 < arrDicesWithPair.length; i1++) {
-					arrObjReturn.push(
-						{"catName": catName, "userDices": [arrDicesWithPair[i1], arrDicesWithPair[i1]],
-							"userScore": 2*arrDicesWithPair[i1] },							
-					)
+				ettParPair1Score = 2 * arrDicesWithPair[0];
+				ettParPair2Score = 2 * arrDicesWithPair[1];
+				//follow this logic: compare the two pairs and suggest the pair with higher score
+				if (ettParPair1Score > ettParPair2Score) {
+                    objReturn = {
+                        "catName": catName,
+                        "userDices": [arrDicesWithPair[0], arrDicesWithPair[0]],
+                        "userScore": 2*arrDicesWithPair[0]
+                    }
+                }
+				else {
+                    objReturn = {
+                        "catName": catName,
+                        "userDices": [arrDicesWithPair[1], arrDicesWithPair[1]],
+                        "userScore": 2*arrDicesWithPair[1]
+                    }
 				}
-				arrCatMatchObjects.push({"catName": catName, arrObjReturn}); //note: two objs
+				arrCatMatchObjects.push(objReturn);
 			}
 		// --- Två par
 		} else if (arrRuleNameRegistry[i] == "tvapar") {
