@@ -1,0 +1,116 @@
+<!doctype HTML>
+
+<script src="./js/vue.js"></script>
+<script src="./js/vuex.js"></script>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="./css/style1.css">
+        <link rel="stylesheet" href="./css/style2.css">
+        <link rel="stylesheet" href="./css/style3.css">
+    </head>
+    <body>
+
+
+
+
+    <div id="gridRow">
+            <div id="dicesAndMessage">
+                <div id="dice1"></div>
+                <div id="dice2"></div>
+                <div id="dice3"></div>
+                <div id="dice4"></div>
+                <div id="dice5"></div>
+                <div id="row1_5_rollAllOrLooseDices" class="diceRollClickAnim">
+                    Ingen tärning är låst. Kasta om alla tärningar: Klicka här
+                </div>
+           </div>
+    </div>
+
+
+
+    <div id="yatziApp">
+        <div id="forGrid1">
+            <add-new-player-component></add-new-player-component>
+            <start-game-component></start-game-component>
+            <some-game-info-component ref="infoComponentRef"></some-game-info-component>
+            <end-game-component></end-game-component>
+        </div>
+        <players-cards-component ref="cardComponent123"></players-cards-component>
+        <hr>
+
+
+
+    </div>
+
+
+    <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modalMessage">Welcome</div>
+            </div>
+        </div>
+    <!-- The Modal -->
+
+    <div id="about">About</div>
+    </body>
+</html>
+
+
+<script>
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+</script>
+
+<script src="./js/Messages.js"></script>    
+<script src="./js/PlayerCardTemplate.js"></script> <!-- PlayerCard -->
+
+
+<script src ="./js/MatchCats.js"></script>
+<script src="./js/ver1_FiveDiceFunctions.js"></script>
+<script src="./js/ver1_VueComponents.js"></script>
+<script src="./js/ver1_VueFile.js"></script>
+<script>
+    document.getElementById("about").addEventListener("click",
+        function() {
+            // document.getElementById("modalMessage").style.backgroundImage = "url('./static/clouds2.jpg')";
+            document.getElementById("modalMessage").innerHTML = `
+                <div class="title">Yatzi</div>
+                <br>
+                Version 1 <br>
+                Design, Development: Bob Lotfabadi<br>
+                <hr>
+                Thanks to <a href="https://codepen.io/Huhtamaki/pen/GPzwPY">CSS Border animation</a> and useful resources:<br>
+                <ul>
+                    <li><a href="https://sv.wikipedia.org/wiki/Yatzy">Yatzy</a></li>
+                    <li><a href="https://threejs.org/examples/#webgl_geometry_normals">Webgl Geometry normals</a></li>
+                    <li><a href="https://scrimba.com/g/gvuex">Learn Vuex</a></li>
+                    <li><a href="http://a.teall.info/dice/">Beautiful dice design</a></li>
+                    <li><a href="https://vuex.vuejs.org/">What is Vuex</a></li>
+                    <li><a href="https://v1.vuejs.org/guide/events.html">Vue Methods and Event Handling</a></li>
+                    <li><a href="https://regex101.com/">Regular expressions</a></li>
+                    <li><a href="https://www.w3schools.com/jsref/met_node_appendchild.asp">HTML DOM appendChild() Method</a></li>
+                    <li><a href="https://bennettfeely.com/clippy/">CSS Clip Paths</a></li>
+                    <li><a href="https://uicookies.com/css-border-animation/">CSS border animation</a></li>
+                    <li><a href="https://codepen.io/Huhtamaki/pen/GPzwPY">CSS Border Animation -- A Pen By Nick </a></li>
+                </ul>
+
+            `
+            modal = document.getElementById("myModal");
+            modal.style.display="block";
+        })
+
+</script>
