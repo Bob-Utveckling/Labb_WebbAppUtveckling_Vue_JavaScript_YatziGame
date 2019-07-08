@@ -72,6 +72,47 @@
     filter: blur(50px);
 }
 
+/* ---- category highlight animation ---- */
+
+.highlightCatAnim {
+    position: relative;
+    margin: 1px auto 0;
+    padding: 1px;
+
+    background: linear-gradient(0deg, #c6ff21, #80ff4e);
+}
+
+.highlightCatAnim:before, .highlightCatAnim:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: -1px;
+    background: linear-gradient(45deg, #2bd726, #51ff4c, #23ae45);
+    background-size: 200%;
+    width: calc(100% + 4px);
+    height: calc(100%);
+    z-index: -1;
+    animation: steam 10s linear infinite;
+}
+
+@keyframes steam {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.highlightCatAnim:after {
+    filter: blur(50px);
+}
+/* --------------------------------- */
+
+
 /* *********** each dice ********** */
 #dice1 {
     font-size: 180px;
