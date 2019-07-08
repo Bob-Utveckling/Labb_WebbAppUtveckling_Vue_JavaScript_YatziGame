@@ -217,7 +217,7 @@ file1_findMatchingCats = function(arrUserDices) {
 						}
 						for (c3 = 0; c3 < 5; c3++) {
 							console.log("count c3 is " + c3);
-							if ( (arrUserDices[c1] == arrUserDices[c3]) && (c1 != c2) && (c2 != c3) ) {
+							if ( (arrUserDices[c1] == arrUserDices[c3]) && (c1 != c2) && (c1 != c3) && (c2 != c3) ) {
 								console.log("found 3 similar dices");
 								arrValidDices = [arrUserDices[c1], arrUserDices[c2], arrUserDices[c3] ] //or all c1s or c2s
 								boolExit = true; //can exit for loops

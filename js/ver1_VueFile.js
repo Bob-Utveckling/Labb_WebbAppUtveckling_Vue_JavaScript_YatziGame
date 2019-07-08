@@ -336,7 +336,8 @@ var app = new Vue({
 
             for (theseCatsI=0; theseCatsI<theseOpenCatObjs.length; theseCatsI++) {
                 var thisDivId = "card" + playerId + "_" + theseOpenCatObjs[theseCatsI].catName;
-                document.getElementById(thisDivId).style="border:3px solid orange;"
+                document.getElementById(thisDivId).className = "highlightCatAnim";
+                // document.getElementById(thisDivId).style="border:3px solid orange;"
                 app.showOpenCatHTML(thisDivId, theseOpenCatObjs[theseCatsI]);
 
             }
