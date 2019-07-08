@@ -31,7 +31,7 @@ Vue.component('end-game-component', {
             <button class="button2"
                 v-on:click="endGame"
             >
-                See Results
+                See Scores
             </button>
         </div>
     `
